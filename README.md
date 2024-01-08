@@ -2,9 +2,13 @@
 
 ## Introducción
 
-JavaScript® (a menudo abreviado como JS) es un lenguaje ligero, interpretado o compilado _('just-in-time')_ y orientado a objetos con funciones de primera clase. Es más conocido por su uso para crear páginas web dinámicas e interactivas, pero también se utiliza en muchos entornos que no son de navegador, como por ejemplo _Node.js_. Es un lenguaje de scripts que es dinámico, multiparadigma, basado en prototipos y admite estilos de programación orientados a objetos, imperativos y funcionales.
+JavaScript® (a menudo abreviado como JS) es un lenguaje de pogramación de alto nivel, interpretado y compilado _('just-in-time')_ y orientado a objetos con funciones de primera clase. Es más conocido por su uso para crear páginas web dinámicas e interactivas, pero también se utiliza en muchos entornos que no son de navegador, como por ejemplo _Node.js_.
 
-La **programación basada en prototipos** es un estilo de programación orientada a objetos en el que las clases no se definen explícitamente, sino que se derivan de agregar propiedades y métodos a una instancia de otra clase o, con menos frecuencia, agregarlos a un objeto vacío.
+Es un lenguaje de **tipado dinámico**, lo que significa que las variables pueden cambiar de tipo durante la ejecución del programa. También es **débilmente tipado**, lo que significa que el intérprete hace su mejor esfuerzo para realizar conversiones de tipo automáticamente.
+
+JavaScript está basado en **prototipos**. Es un estilo de programación orientada a objetos en el que las clases no se definen explícitamente, sino que se derivan de agregar propiedades y métodos a una instancia de otra clase o, con menos frecuencia, agregarlos a un objeto vacío.
+
+Por tanto JavaScript es multiparadigma ya que admite estilos de programación orientados a objetos, imperativos y funcionales.
 
 En palabras simples: este tipo de estilo permite la creación de un objeto sin definir primero su clase.
 
@@ -95,7 +99,23 @@ En cambio, si la etiqueta `<script>` se coloca justo antes de la etiqueta de cie
 
 #### Carga de un fichero externo
 
-##### Modalidad clásica
+El atributo `integrity` permite comprobar la integridad de un fichero fichero JavaScript externo y así detectar posibles manipulaciones.
+
+En el atributo se indica el hash proporcionado por el desarrollador de la librería. Al descargar este fichero externo el navegador calcurará el hash y comprobará si el hash calculado y el hash indicado en el atributo coinciden:
+
+```html
+<head>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" 
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
+    crossorigin="anonymous"></script>
+</head>
+```
+
+- [Más información](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
+
+- [Más información sobre SRI (Subresource Integrity)](https://www.w3.org/TR/SRI/)
+
+##### Modalidad de carga clásica
 
 En el modo [**clásico**](https://lenguajehtml.com/html/scripting/etiqueta-html-script/#modalidad-cl%C3%A1sica) y que es el modo de carga por defecto de los navegadores, cuando indicamos un script externo mediante el atributo **_'src'_**, el proceso de carga del script por parte del navegador es el siguiente:
 
@@ -105,7 +125,7 @@ En el modo [**clásico**](https://lenguajehtml.com/html/scripting/etiqueta-html-
 4. Ejecuta el código javascript una vez descargado.
 5. Reanuda el proceso de parseo y renderizado del documento HTML por donde lo dejó.
 
-##### Modalidad diferido
+##### Modalidad de carga en diferido
 
 En la modalidad de carga [**diferida**](https://lenguajehtml.com/html/scripting/atributo-defer-async/#modalidad-diferida-defer), el navegador le da **prioridad a la carga del documento HTML**. El proceso de carga del script por parte del navegador es el siguiente:
 
@@ -124,7 +144,7 @@ Este tipo de carga se realiza incluyendo el atributo **_'defer'_** en la etiquet
 
 En muchas ocasiones las etiquetas `<script>` se colocan (o se aconseja hacerlo) justo antes del cierre de la etiqueta `</body>`. Esto ocurre así porque históricamente, el atributo **_'defer'_** no existía (o existía pero Internet Explorer no lo soportaba) y se necesitaba procesar el JavaScript una vez se hubiese terminado de cargar todo el HTML, para evitar acceder a una parte del documento HTML desde JavaScript y que aún no hubiera cargado.
 
-##### Modalidad asíncrona
+##### Modalidad de carga asíncrona
 
 En la modalidad de carga [**asíncrona**](https://lenguajehtml.com/html/scripting/atributo-defer-async/#modalidad-as%C3%ADncrona-async), el navegador le da prioridad a la ejecución del Javascript. En esta modalidad de carga asíncrona, lo que ocurre es lo siguiente:
 
@@ -133,7 +153,7 @@ En la modalidad de carga [**asíncrona**](https://lenguajehtml.com/html/scriptin
 3. Una vez descargado, interrumpe el renderizado HTML temporalmente y ejecuta el script.
 4. Una vez terminada la ejecución del código Javascript, continua con el renderizado HTML.
 
-Este tipo de carga se realiza incluyendo el atributo **_'defer'_** en la etiqueta `<script>`.
+Este tipo de carga se realiza incluyendo el atributo **_'async'_** en la etiqueta `<script>`.
 
 ```html
 <head>
@@ -162,11 +182,31 @@ Si no es posible realizar una alternativa al código Javascript, lo ideal sería
 </noscript>
 ```
 
+## Ejecución de JavaScript fuera del navegador
+
+**Node.js** es un entorno de ejecución para JavaScript del lado del servidor, construido sobre el motor V8 de Google Chrome y creado por Ryan Dahl. A diferencia de JavaScript tradicional, que se ejecuta en el navegador del cliente, Node.js permite ejecutar código JavaScript en el servidor.
+
+Existen otras alternativas como [**Deno**](https://deno.com/), también de Ryan Dahl o [**Bun**](https://bun.sh/).
+
+```sh
+# Ejecutar el contenido del fichero 'test.js' con Node.js
+$ node test.js
+```
+
+Otra opción es invocar una consola interactiva, como en Python, y ejecutar el código directamente:
+
+```sh
+# Invoca la consola
+$ node
+> console.log("Hello World!!");
+Hello World!!
+```
+
 ## Sintaxis del lenguaje
 
 JavaScript está influenciado sobre todo por la sintaxis de Java, C y C++, pero también ha sido influenciado por Awk, Perl y Python.
 
-JavaScript distingue entre mayúsculas y minúsculas (es _case-sensitive_) y utiliza el conjunto de caracteres Unicode. Por ejemplo, la palabra «Früh» (que significa "temprano" en alemán) se podría usar como el nombre de una variable:
+JavaScript distingue entre mayúsculas y minúsculas (es **_case-sensitive_**) y utiliza el conjunto de caracteres Unicode. Por ejemplo, la palabra «Früh» (que significa "temprano" en alemán) se podría usar como el nombre de una variable:
 
 ```js
 let Früh = "foobar";
@@ -194,9 +234,11 @@ Existe un tercer tipo de sintaxis de comentario al comienzo de algunos archivos 
 
 ### Variables
 
-Una variable es un espacio de memoria donde almacenamos temporalmente un dato para ser utilizado posteriormente en nuestro código. Los nombres de las variables, llamados **identificadores**, se ajustan a ciertas reglas.
+JavaScript es un lenguaje débilmente tipado. Esto quiere decir que no se indica de qué tipo es cada variable que se declara.
 
-Un identificador de JavaScript debe comenzar con una letra, un guión bajo (\_) o un signo de dólar ($). Los siguientes caracteres también pueden ser dígitos (0-9). La única restricción es que no puede **empezar por un número**.
+Una variable es un espacio de memoria donde se almacena temporalmente un dato para ser utilizado posteriormente en el código. Los nombres de las variables, llamados **identificadores**, se ajustan a ciertas reglas.
+
+Un identificador de JavaScript debe comenzar con una letra, un guión bajo (\_) o un signo de dólar (`$`). Los siguientes caracteres, además de lo indicado anterioremente, pueden incluir dígitos (0-9). La única restricción es que no puede **empezar por un número**.
 
 Dado que JavaScript distingue entre mayúsculas y minúsculas, las letras incluyen los caracteres "A" a "Z" (mayúsculas), así como "a" a "z" (minúsculas).
 
@@ -208,11 +250,11 @@ Hay que tener en cuenta, al igual que en el resto de lenguajes, que el nombre de
 
 JavaScript tiene tres tipos de declaraciones de variables:
 
-- **var**: Declara una variable. Opcionalmente se le puede asignar un valor. Esta sintaxis se puede utilizar para declarar variables locales y globales, dependiendo del contexto de ejecución.
+- **var**: Declara una variable tanto local como global, dependiendo del contexto de ejecución. Si se declara dentro de una función tiene ámbito de función. Si se declara fuera de una función tiene ámbito global.
 
-- **let** Declara una variable local con ámbito de bloque, opcionalmente la inicia a un valor.
+- **let** (a partir de ES2015): Declara una variable local con ámbito de bloque.
 
-- **const** Declara un nombre de constante de sólo lectura y ámbito de bloque.
+- **const** (a partir de ES2015): Declara un nombre de constante de sólo lectura y ámbito de bloque.
 
 Se puede asignar un valor directamente a una variable, como por ejemplo `x = 4`. Esto crea una variable global no declarada. A menudo provocan un comportamiento inesperado por lo que se **desaconseja su uso**.
 
@@ -222,7 +264,7 @@ Una variable declarada usando la instrucción **var** o **let** sin un valor asi
 var x; // Declaración sin asignación de valor. Tiene el valor de 'undefined'
 var y = 10; // Declaración y asignación de valor
 
-console.log("El valor de c es " + c);
+console.log(`El valor de c es ${c}`);
 // Error de referencia no detectado: c no está definida
 // ("Uncaught ReferenceError: c is not defined")
 
@@ -233,23 +275,20 @@ if (input === undefined) {
 } else {
   doThat();
 }
-```
 
-El valor **undefined** y **null** se comportan como **false** en contextos booleanos.
-
-El valor **undefined** se comporta como **NaN** en contextos numéricos mientras que **null** se comporta como un **0**.
-
-```js {.numberLines}
-var a;
-a + 2; // Evalúa a NaN
-
-var input; // undefined
-if (input) {
-  // Se comporta como 'false' en contextos booleanos.
-  doThis();
-} else {
-  doThat(); // Se ejecutará este código
+// Declaración con 'let' dentro de bloque
+var x = 5;
+{
+  let x = 10;
+  console.log(`Declaración con 'let' dentro del bloque: ${x}`); // x = 10
 }
+console.log(`Declaración con 'var' fuera del bloque: ${x}`); // x = 5
+
+function declaracionVariableEnFuncion() {
+  // Variable declarada dentro de una función
+  var y = 20;
+}
+console.log(y); // ERROR!! ReferenceError: y is not defined
 ```
 
 #### Ámbito de las variables
@@ -257,7 +296,8 @@ if (input) {
 Cuando se declara una variable fuera de cualquier función, se denomina **variable global**, porque está disponible para cualquier otro código en el documento actual. Cuando se declara una variable dentro de una función, se llama **variable local**, porque solo está disponible dentro de esa función.
 
 ```js
-// El ámbito de 'x' es el contexto global (o el de una función si este código estuviera dentro de una función). Por tanto 'x' no se limita al bloque if.
+// El ámbito de 'x' es el contexto global (o el de una función si este código estuviera 
+// dentro de una función). Por tanto 'x' no se limita al bloque if.
 if (true) {
   var x = 5;
 }
@@ -378,20 +418,29 @@ No se puede declarar una constante con el mismo nombre que una función o una va
 
 ### Estructuras y tipos de datos
 
-#### Tipos de datos
+- **Tipos primitivos**:
+  - _number_ - valor númerico como enteros o decimales
+  - _string_ - una secuencia de caracteres que representan un valor de texto
+  - _boolean_ - valores de `true` o `false`
+  - _null_ - `null` es una palabra clave especial que denota un valor nulo
+  - _undefined_ - `undefined` es una propiedad de alto nivel cuyo valor no está definido
+  - _symbol_ (ECMAScript 6) - tipo de dato cuyas instancias son únicas e inmutables
 
-El último estándar ECMAScript define ocho tipos de datos:
+- **Objetos**:
+  - _Object_ - los objetos son como contenedores con nombre para los valores
+  - _Array_ - un tipo especial de objeto para almacenar una secuencia ordenada de valores
+  - _Function_ - objetos que contienen código ejecutable.
 
-- Tipos de **datos primitivos**:
-  - Number -> valor númerico como enteros o decimales
-  - Bigint -> Un número entero con precisión arbitraria
-  - Booleano -> `true` o `false`
-  - Nulo -> `null` es una palabra clave especial que denota un valor nulo
-  - undefined -> `undefined` es una propiedad de alto nivel cuyo valor no está definido
-  - String -> Una secuencia de caracteres que representan un valor de texto
-  - Symbol -> (nuevo en ECMAScript 6) Un tipo de dato cuyas instancias son únicas e inmutables
-- Tipos de **datos no primitivos**:
-  - Object -> Los objetos son como contenedores con nombre para los valores
+- **Estructuras de datos adicionales**:
+  - _Set_ - colección de valores únicos.
+  - _Map_ - colección de pares clave-valor.
+  - _WeakSet_ y _WeakMap_ - versiones "débiles" de Set y Map que no impiden la eliminación de elementos por el recolector de basura.
+
+- **Tipos especiales**:
+  - _Bigint_ (ECMAScript 2020) - representa un número entero con precisión arbitraria
+  - _Promise_ - utilizado para operaciones asincrónicas.
+  - _Proxy_ - utilizado para la creación de objetos con comportamientos personalizados.
+  - _RegExp_ - representa expresiones regulares.
 
 #### Comprobación de tipos
 
@@ -405,9 +454,34 @@ console.log(typeof null); // object
 console.log(typeof undefined); // undefined
 ```
 
+Existe la función `isNaN()` para comprobar si una expresión es numérica o no lo es. Para JavaScript, el valor **NaN (_"Not a Number"_)** es un valor válido.
+
+```js
+isNaN(NaN); // true
+isNaN(1); // false: 1 is a number
+isNaN(-2e-4); // false: -2e-4 is a number (-0.0002) in scientific notation
+isNaN(Infinity); // false: Infinity is a number
+isNaN(true); // false: converted to 1, which is a number
+isNaN(false); // false: converted to 0, which is a number
+isNaN(null); // false: converted to 0, which is a number
+isNaN(""); // false: converted to 0, which is a number
+isNaN(" "); // false: converted to 0, which is a number
+isNaN("45.3"); // false: string representing a number, converted to 45.3
+isNaN("1.2e3"); // false: string representing a number, converted to 1.2e3
+isNaN("Infinity"); // false: string representing a number, converted to Infinity
+isNaN(new Date); // false: Date object, converted to milliseconds since epoch
+isNaN("10$"); // true : conversion fails, the dollar sign is not a digit
+isNaN("hello"); // true : conversion fails, no digits at all
+isNaN(undefined); // true : converted to NaN
+isNaN(); // true : converted to NaN (implicitly undefined)
+isNaN(function(){}); // true : conversion fails
+isNaN({}); // true : conversion fails
+isNaN([1, 2]); // true : converted to "1, 2", which can't be converted to a number
+```
+
 #### Conversión de tipos de datos
 
-JavaScript es un lenguaje _tipado dinámicamente_. Esto significa que no hay que especificar el tipo de dato de una variable cuando se declara. También significa que los tipos de datos se convierten automáticamente según sea necesario durante la ejecución del script.
+JavaScript es un lenguaje **_tipado dinámicamente_**. Esto significa que no hay que especificar el tipo de dato de una variable cuando se declara. También significa que los tipos de datos se convierten automáticamente según sea necesario durante la ejecución del script.
 
 ```js
 // Esto es perfectamente válido y no genera ningún error
@@ -416,28 +490,7 @@ var answer = 42;
 answer = "La variable ahora contiene un texto";
 ```
 
-#### Números y el operador de suma
-
-En expresiones que involucran valores numéricos y de cadena con el operador `+`, JavaScript convierte los valores numéricos en cadenas.
-
-```js
-var x = "La respuesta es " + 42; // "La respuesta es 42"
-console.log(typeof x); // string
-```
-
-Con todos los demás operadores, JavaScript no convierte valores numéricos en cadenas.
-
-```js
-var y = "37" - 7; // 30
-console.log(typeof y); // number
-
-var z = "37" + 7; // "377"
-console.log(typeof z); // string
-```
-
-Utilizar el operador de suma para concatenar cadenas se considera una práctica obsoleta. En su lugar es mejor utilizar **cadenas de plantillas**.
-
-#### Convertir texto a números
+##### Convertir texto a números
 
 En el caso que un valor representando un número está en memoria como texto, tenemos los métodos `parseInt()` y `parseFloat()` para realizar la conversión.
 
@@ -449,6 +502,346 @@ Además, la función `parseInt()` permite indicar el sistema numérico a utiliza
 parseInt("3.456"); // Devuelve 3
 
 parseInt("101", 2); // Devuelve 5 ya que 101 es la representación en binario de 5
+```
+
+#### Números
+
+A diferencia de Java o C/C++, JavaScript utiliza el mismo tipo para todos los números, tanto números enteros como números con decimales. Por tanto en JavaScript todos los números ocupan en memoria **64bits**.
+
+```js
+// Número entero
+let entero = 1980;
+// Número con decimales
+let decimales = 0.25;
+
+// Notación científica
+const AVOGRADOR = 6.022e+23;
+// Número hexadecimal (prefijo 0x)
+let hexa = 0xAB12;
+// Número octal (prefijo 0o)
+let octal = 0o27652;
+// Número binario (prefijo 0b)
+let bin = 0b100101;
+```
+
+JavaScript permite la utilización del número infinito (**_'Infinity'_**):
+
+```js
+var x = 1/0;
+console.log(z); // imprime 'Infinity'
+
+var z1 = Infinity;
+console.log(z1); // imprime 'Infinity'
+```
+
+El valor **undefined** se comporta como **NaN** en contextos numéricos mientras que **null** se comporta como un **0**.
+
+#### Valores booleanos
+
+Los valores booleanos sólo pueden tomar los valores **true** o **false**.
+
+Sin embargo, en JavaScript todo valor o expresión se comporta como un valor booleano. Mediante la función `Boolean()` podemos imprimir el valor booleano de cualquier otro valor:
+
+```js {.numberLines}
+// Se comportan como 'true'
+console.log(Boolean(true));
+console.log(Boolean(1));
+console.log(Boolean("cadena no vacía"));
+console.log(Boolean(Infinity));
+
+
+// Se comportan como 'false'
+console.log(Boolean(false));
+console.log(Boolean(0));
+console.log(Boolean(""));
+console.log(Boolean(NaN));
+console.log(Boolean(undefined));
+console.log(Boolean(null));
+```
+
+Por tanto, sólo los **textos vacíos**, el valor **0**, el valor **false**, el valor **undefined** y **null** se comportan como **false** en contextos booleanos.
+
+#### Strings
+
+JavaScript permite delimitar los textos tanto con comillas simples como con comillas dobles. Desde la versión ES2016 se permiten las comillas invertidas.
+
+El operador de suma `+` permite concatenar texto y expresiones en JavaScript aunque esta práctica se ya considera obsoleta:
+
+```js
+var x = "La respuesta es " + 42; // "La respuesta es 42"
+console.log(typeof x); // string
+```
+
+Con todos los demás operadores, JavaScript no convierte valores numéricos en cadenas:
+
+```js
+var y = "37" - 7; // 30
+console.log(typeof y); // number
+
+var z = "37" + 7; // "377"
+console.log(typeof z); // string
+```
+
+A partir de ES2016 se deben utilizar las **_string templates_** utilizando `${}` dentro de una cadena con comillas invertidas:
+
+```js
+let x = 8;
+console.log(`La variable 'x' vale ${x}`);
+
+console.log(`Un día tiene ${24*60*60} segundos`);
+```
+
+```js
+// Secuencias de escape
+let texto ="Una línea\nOtra línea";
+```
+
+- `\n` - salto de línea
+- `\t` - tabulador
+- `\r` - retorno de carro
+- `\f` - salto de página
+- `\v` - tabulador vertical
+- `\"` - comillas dobles
+- `\'` - comilla simple
+- `\b` - retroceso
+- `\\` - barra invertida
+
+Para mostrar caracteres [Unicode](https://home.unicode.org/) se utiliza la secuencia de escape `\u{code}` o usando `String.fromCodePoint()`:
+
+```js
+// Imprimir el carácter Unicode usando el formato de escape Unicode
+console.log('\u{1F601}'); // Imprime el emoji 😁
+
+// Imprimir el carácter Unicode utilizando 'String.fromCodePoint()'
+console.log(String.fromCodePoint(0x1F601)); // Imprime el emoji 😁 
+```
+
+En JavaScript los strings disponen de algunas funciones y propiedades como por ejemplo:
+
+```js
+// La propiedad 'length' devuelve la longitud de la cadena
+console.log("miCadena".length) // imprime '8'
+
+// 'charAt(index)' devuelve el carácter en la posición especificada
+console.log("miCadena".charAt(2)) // imprime 'C'
+
+// 'charCodeAt(index)' devuelve el valor Unicode del carácter en la posición especificada
+console.log("miCadena".charCodeAt(1)); // Imprime el valor Unicode de "i" = 105
+
+// 'concat(str1, str2, ...)' combina dos o más cadenas y devuelve una nueva cadena
+console.log("Hello ".concat("World!!")); // Imprime 'Hello World!!"
+
+// 'indexOf(subcadena[, inicio])' devuelve la primera posición de la subcadena en la cadena
+// o -1 si no se encuentra
+console.log("Hola, mundo!".indexOf("mundo")); // Imprime 7
+
+// 'slice(inicio[, fin])' extrae una porción de la cadena desde inicio hasta fin (sin incluir fin).
+console.log("Hola, mundo!".slice(0, 5)); // Imprime "Hola"
+
+// 'toUpperCase()' y 'toLowerCase()'
+console.log("Hola, mundo!".toUpperCase()); // Imprime "HOLA, MUNDO!"
+
+// 'trim()' elimina los espacios en blanco al principio y al final de la cadena
+console.log("   Hola, mundo!   ".trim()); // Imprime "Hola, mundo!"
+
+// 'split(separador)' divide la cadena en un array de subcadenas utilizando el separador proporcionado.
+console.log("Hola, mundo!".split(", ")); // Imprime ["Hola", "mundo!"]
+```
+
+### Operadores
+
+#### Operadores aritméticos
+
+```js
+// Suma '+'
+let suma = 2 + 2;
+
+// Resta '-'
+let resta = 10 - 2;
+
+// Multiplicación '*'
+let multiplicacion = 5 * 4;
+
+// División '/'
+let division = 4 / 2;
+
+// Resto '%'
+let resto = 8 % 3;
+
+// Exponente '**'
+let exponente = 4 ** 2;
+```
+
+#### Operadores relacionales o de comparación
+
+```js
+// Mayor '>'
+console.log(5 > 4); // imprime 'true'
+
+// Menor '<'
+console.log(4 < 5); // imprime 'true'
+
+// Mayor o igual '>='
+console.log(5 >= 4); // imprime 'true'
+
+// Menor o igual '<='
+console.log(4 <= 5); // imprime 'true'
+
+// Igualdad (o igualdad débil) '=='
+console.log(5 == "5"); // imprime 'true'
+
+// Identidad (o igualdad fuerte) '==='
+console.log(5 === "5"); // imprime 'false'
+
+// Desigualdad débil '!='
+console.log(5 != "5"); // imprime 'false'
+
+// Desigualdad estricta '!=='
+console.log(5 !== "5"); // imprime 'true'
+```
+
+#### Operadores lógicos
+
+```js
+// Negación '!'
+console.log(!true); // imprime 'false'
+console.log(!false); // imprime 'true'
+
+// AND '&&'
+console.log(true && true); // imprime 'true'
+console.log(true && false); // imprime 'false'
+console.log(false && true); // imprime 'false'
+console.log(false && false); // imprime 'false'
+
+// OR '||'
+console.log(true || true); // imprime 'true'
+console.log(true || false); // imprime 'true'
+console.log(false || true); // imprime 'true'
+console.log(false || false); // imprime 'false'
+```
+
+#### Operadores de asignación
+
+El operador de asignación más importante es `=`, que permite asignar un valor a una variable.
+
+```js
+// Asignación '='
+let miDato = 5;
+
+// Preincremento '++var'
+console.log(++miDato); // Realiza el incremento +1 y luego lee la variable e imprime '6'
+
+// Postincremento 'var++'. Equivale a 'miDato = miDato + 1'
+console.log(miDato++); // Lee e imprime el valor '5' y luego realiza el incremento +1
+
+// Predecremento '--var'
+console.log(--miDato); // Realiza el decremento -1 y luego lee la variable e imprime '4'
+
+// Postdecremento 'var--'. Equivale a 'miDato = miDato - 1'
+console.log(miDato++); // Lee e imprime el valor '5' y luego realiza el decremento -1
+
+// Suma y asignación
+x += 5; // Equivale a x = x + 5;
+
+// Resta y asignación
+x -= 5; // Equivale a x = x - 5;
+
+// Multiplicación y asignación
+x *= 5; // Equivale a x = x * 5;
+
+// División y asignación
+x /= 5; // Equivale a x = x / 5;
+
+// Resto y asignación
+x %= 5; // Equivale a x = x % 5;
+
+// Exponente y asignación
+x **= 5; // Equivale a x = x ** 5;
+```
+
+## Control de flujo
+
+```js
+// Asignación condicinal "condicion ? valor_si_true : valor_si_false"
+true ? 5 : 2; // Devuelve 5
+false ? 5 : 2; // Devuelve 2
+```
+
+```js
+// Sentencia condicional simple
+if (condicion) {
+  // bloque
+}
+
+// Sentencia condicional compuesta
+if (condicion) {
+  // bloque
+} else {
+  // bloque
+}
+
+// Anidación
+if (condicion) {
+  // bloque
+} else if (condicion_2) {
+  // bloque
+} else if (condicion_3) {
+  // bloque
+} else if (condicion_4) {
+  // bloque
+} else {
+  // bloque
+}
+```
+
+```js
+switch (expresion) {
+  case valor1:
+    // código a ejecutar si expresion === valor1
+    break;
+  case valor2:
+    // código a ejecutar si expresion === valor2
+    break;
+  // Puedes tener tantos casos como necesites
+  default:
+    // código a ejecutar si ninguno de los casos coincide con la expresion
+}
+```
+
+```js
+// Bucles 'while'
+while (condición) {
+  // Código a ejecutar en cada iteración. No se garantiza la ejecución
+}
+
+// Bucles 'do-while'
+do {
+  // Código a ejecutar en cada iteración. Mínimo habrá una iteración
+} while (condición);
+
+// Bucles 'for'
+for (inicialización; condición; actualización) {
+  // Código a ejecutar en cada iteración
+}
+
+// Bucle 'for..of' para iterar sobre elementos de objetos iteralbles como arrays
+let array = [1, 2, 3, 4, 5];
+for (let element of array) {
+  console.log(element);
+}
+
+// Bucle 'forEach' para iterar sobre los arrays
+let array = [1, 2, 3, 4, 5];
+array.forEach(function(element) {
+  console.log(element);
+});
+
+// Bucle 'for..in' para iterar sobre las propiedades enumerables de un objeto
+let objeto = { a: 1, b: 2, c: 3 };
+for (let key in objeto) {
+  console.log(key, objeto[key]);
+}
+
 ```
 
 ## Funciones
@@ -554,12 +947,502 @@ var result = (function () {
 result; // "Barry"
 ```
 
+## Resumen
+
+```javascript
+// Los comentarios en JavaScript son los mismos como comentarios en C. 
+
+//Los comentarios de una sola línea comienzan con //,
+/* y los comentarios multilínea comienzan
+   y terminan con */
+
+// Cada sentencia puede ser terminada con punto y coma ;
+hazAlgo();
+
+// ... aunque no es necesario, ya que el punto y coma se agrega automáticamente
+// cada que se detecta una nueva línea, a excepción de algunos casos.
+hazAlgo()
+
+// Dado que esta práctica puede llevar a resultados inesperados, seguiremos agregando
+// punto y coma en esta guía.
+
+///////////////////////////////////
+// 1. Números, Strings y Operadores
+
+// JavaScript tiene un solo tipo de número (doble de 64-bit IEEE 754).
+// Así como con Lua, no te espantes por la falta de enteros: los dobles tienen 52 bits
+// de mantisa, lo cual es suficiente para guardar enteros de hasta 9✕10¹⁵.
+3; // = 3
+1.5; // = 1.5
+
+// Toda la aritmética básica funciona como uno esperaría.
+1 + 1; // = 2
+0.1 + 0.2; // = 0.30000000000000004
+8 - 1; // = 7
+10 * 2; // = 20
+35 / 5; // = 7
+
+// Incluyendo divisiones con resultados no enteros.
+5 / 2; // = 2.5
+
+// Las operaciones con bits también funcionan; cuando ejecutas una operación con bits
+// el número flotante se convierte a entero con signo *hasta* 32 bits.
+1 << 2; // = 4
+
+// La jerarquía de las operaciones se aplica con paréntesis.
+(1 + 3) * 2; // = 8
+
+// Hay tres casos especiales de valores con los números:
+Infinity; // por ejemplo: 1/0
+-Infinity; // por ejemplo: -1/0
+NaN; // por ejemplo: 0/0
+
+// También hay booleanos:
+true;
+false;
+
+// Los Strings se pueden crear con ' o ".
+'abc';
+"Hola, mundo";
+
+// La negación se aplica con la expresión ! 
+!true; // = false
+!false; // = true
+
+// Para comprobar una igualdad se usa ===
+1 === 1; // = true
+2 === 1; // = false
+
+// Para comprobar una desigualdad se usa !==
+1 !== 1; // = false
+2 !== 1; // = true
+
+// Más comparaciones
+1 < 10; // = true
+1 > 10; // = false
+2 <= 2; // = true
+2 >= 2; // = true
+
+// Los Strings se concatenan con +
+"¡Hola " + "mundo!"; // = "¡Hola mundo!"
+
+// y se comparan con < y con >
+"a" < "b"; // = true
+
+// Los tipos no importan con el operador ==...
+"5" == 5; // = true
+null == undefined; // = true
+
+// ...a menos que uses ===
+"5" === 5; // = false
+null === undefined; // false
+
+// Los Strings funcionan como arreglos de caracteres
+// Puedes acceder a cada caracter con la función charAt()
+"Este es un String".charAt(0);  // = 'E'
+
+// ...o puedes usar la función substring() para acceder a pedazos más grandes
+"Hola Mundo".substring(0, 4); // = "Hola"
+
+// length es una propiedad, así que no uses ()
+"Hola".length; // = 4
+
+// También hay null y undefined
+null; // usado para indicar una falta de valor deliberada
+undefined; // usado para indicar que un valor no está presente actualmente
+           // (aunque undefined es un valor en sí mismo)
+
+// false, null, undefined, NaN, 0 y "" es false; todo lo demás es true.
+// Note que 0 es false y "0" es true, a pesar de que 0 == "0".
+// Aunque 0 === "0" sí es false.
+
+///////////////////////////////////
+// 2. Variables, Arrays y Objetos
+
+// Las variables se declaran con la palabra var. JavaScript cuenta con tipado dinámico,
+// así que no se necesitan aplicar tipos. La asignación se logra con el operador =.
+var miPrimeraVariable = 5;
+
+// si no escribes la palabra var no se marcará ningún error...
+miSegundaVariable = 10;
+
+// ...pero tu variable se declarará en el ámbito global, no en el ámbito
+// en el que se definió.
+
+// Las variables que no están aún asignadas tienen el valor undefined.
+var miTerceraVariable; // = undefined
+
+// Existen atajos para realizar operaciones aritméticas:
+miPrimeraVariable += 5; // equivalente a miPrimeraVariable = miPrimeraVariable + 5;
+                        // miPrimeraVariable ahora es 10
+miPrimeraVariable *= 10; // ahora miPrimeraVariable es 100
+
+// Y atajos aún más cortos para sumar y restar 1
+miPrimeraVariable++; // ahora miPrimeraVariable es 101
+miPrimeraVariable--; // de vuelta a 100
+
+// Los arreglos son listas ordenadas de valores, de cualquier tipo.
+var miArreglo = ["Hola", 45, true];
+
+// Los miembros de un arreglo pueden ser accesados con la sintaxis 
+// de indices dentro de corchetes [].
+// Los índices empiezan en cero.
+miArreglo[1]; // = 45
+
+// Los arreglos son mutables y pueden cambiar de longitud.
+miArreglo.push("Mundo");
+miArreglo.length; // = 4
+
+// Agregar/Modificar en un determinado índice
+miArreglo[3] = "Hola";
+
+// Los objetos en JavaScript son equivalentes a los 'diccionarios' o 'mapas' en otros
+// lenguajes: una colección de pares llave/valor desordenada.
+var miObjeto = {llave1: "Hola", llave2: "Mundo"};
+
+// Las llaves son strings, pero no se necesitan las comillas si son un identificador
+// válido de JavaScript. Los valores pueden ser de cualquier tipo.
+var miObjeto = {miLlave: "miValor", "mi otra llave": 4};
+
+// Los atributos de los objetos también pueden ser accesadas usando
+//  la sintaxis de corchetes,
+miObjeto["mi otra llave"]; // = 4
+
+// ... o usando la sintaxis de punto, dado que la llave es un identificador válido.
+miObjeto.miLlave; // = "miValor"
+
+// Los objetos son mutables; los valores pueden ser cambiados y se pueden
+// agregar nuevas llaves.
+miObjeto.miTerceraLlave = true;
+
+// Si intentas acceder con una llave que aún no está asignada tendrás undefined.
+miObjeto.miCuartaLlave; // = undefined
+
+///////////////////////////////////
+// 3. Lógica y estructura de control
+
+// La sintaxis de esta sección es casi idéntica a la de Java. 
+
+// La estructura if funciona de la misma forma.
+var contador = 1;
+if (contador == 3){
+    // evaluar si contador es igual a 3
+} else if (contador == 4){
+    // evaluar si contador es igual a 4
+} else {
+    // evaluar si contador no es igual a 3 ni a 4
+}
+
+// De la misma forma la estructura while.
+while (true){
+    // ¡Loop infinito!
+}
+
+// La estructura Do-while es igual al while, excepto que se ejecuta al menos una vez.
+var input
+do {
+    input = conseguirInput();
+} while (!esValido(input))
+
+// la esctructura for es la misma que la de C y Java:
+// inicialización; condición; iteración.
+for (var i = 0; i < 5; i++){
+    // correrá cinco veces
+}
+
+// && es un "y" lógico, || es un "o" lógico
+if (casa.tamano == "grande" && casa.color == "azul"){
+    casa.contiene = "oso";
+}
+if (color == "rojo" || color == "azul"){
+    // el color es rojo o azul
+}
+
+// && y || "corto circuito", lo cual es útil para establecer valores por defecto.
+var nombre = otroNombre || "default";
+
+
+// la estructura switch usa === para sus comparaciones
+// usa 'break' para terminar cada caso 
+// o los casos después del caso correcto serán ejecutados también. 
+calificacion = 'B';
+switch (calificacion) {
+  case 'A':
+    console.log("Excelente trabajo");
+    break;
+  case 'B':
+    console.log("Buen trabajo");
+    break;
+  case 'C':
+    console.log("Puedes hacerlo mejor");
+    break;
+  default:
+    console.log("Muy mal");
+    break;
+}
+
+
+///////////////////////////////////
+// 4. Funciones, ámbitos y closures
+
+// Las funciones en JavaScript son declaradas con la palabra clave "function".
+function miFuncion(miArgumentoString){
+    return miArgumentoString.toUpperCase(); //la funcion toUpperCase() vuelve todo
+    // el String a mayúsculas
+}
+miFuncion("foo"); // = "FOO"
+
+// Note que el valor a ser regresado debe estar en la misma línea que la
+// palabra clave 'return', de otra forma la función siempre regresará 'undefined' 
+// debido a la inserción automática de punto y coma.
+function miFuncion()
+{
+    return // <- punto y coma insertado aquí automáticamente
+    {
+        estaEsUna: 'propiedad'
+    }
+}
+miFuncion(); // = undefined al mandar a llamar la función
+
+// Las funciones en JavaScript son de primera clase, así que pueden ser asignadas
+// a variables y pasadas a otras funciones como argumentos - por ejemplo:
+function miFuncion(){
+    // este código será llamado cada cinco segundos
+}
+setTimeout(miFuncion, 5000);
+// Note: setTimeout no es parte de JS, pero lo puedes obtener de los browsers
+// y Node.js.
+
+// Es posible declarar funciones sin nombre - se llaman funciones anónimas
+// y se definen como argumentos de otras funciones.
+setTimeout(function(){
+    // este código se ejecuta cada cinco segundos
+}, 5000);
+
+// JavaScript tiene ámbitos de funciones; las funciones tienen su propio ámbito pero
+// otros bloques no.
+if (true){
+    var i = 5;
+}
+i; // = 5 - en un lenguaje que da ámbitos por bloque esto sería undefined, pero no aquí.
+
+// Este conlleva a un patrón de diseño común llamado "ejecutar funciones anónimas 
+//inmediatamente", que preveé variables temporales de fugarse al ámbito global
+(function(){
+    var temporal = 5;
+    // Podemos acceder al ámbito global asignando al 'objeto global', el cual
+    // en un navegador siempre es 'window'. El objeto global puede tener
+    // un nombre diferente en ambientes distintos, por ejemplo Node.js .
+    window.permanente = 10;
+})();
+temporal; // da ReferenceError
+permanente; // = 10
+
+// Una de las características más útiles de JavaScript son los closures.
+// Si una función es definida dentro de otra función, la función interna tiene acceso
+// a todas las variables de la función externa, incluso aunque la función 
+// externa ya haya terminado.
+function decirHolaCadaCincoSegundos(nombre){
+    var texto = "¡Hola, " + nombre + "!";
+    // Las funciones internas son puestas en el ámbito local por defecto
+    // como si fueran declaradas con 'var'.
+    function interna(){
+        alert(texto);
+    }
+    setTimeout(interna, 5000);
+    // setTimeout es asíncrono, así que la función decirHolaCadaCincoSegundos 
+    // terminará inmediatamente, y setTimeout llamará a interna() a los cinco segundos
+    // Como interna está "cerrada dentro de" decirHolaCadaCindoSegundos, interna todavía tiene
+    // acceso a la variable 'texto' cuando es llamada.
+}
+decirHolaCadaCincoSegundos("Adam"); // mostrará una alerta con "¡Hola, Adam!" en 5s
+
+///////////////////////////////////
+// 5. Más sobre objetos; constructores y prototipos
+
+// Los objetos pueden contener funciones.
+var miObjeto = {
+    miFuncion: function(){
+        return "¡Hola Mundo!";
+    }
+};
+miObjeto.miFuncion(); // = "¡Hola Mundo!"
+
+// Cuando las funciones de un objeto son llamadas, pueden acceder a las variables 
+// del objeto con la palabra clave 'this'.
+miObjeto = {
+    miString: "¡Hola Mundo!",
+    miFuncion: function(){
+        return this.miString;
+    }
+};
+miObjeto.miFuncion(); // = "¡Hola Mundo!"
+
+// Las funciones de un objeto deben ser llamadas dentro del contexto de ese objeto.
+var miFuncion = myObj.miFuncion;
+miFuncion(); // = undefined
+
+// Una función puede ser asignada al objeto y ganar acceso a él gracias a esto,
+// incluso si no estaba dentro del objeto cuando este se definió.
+var miOtraFuncion = function(){
+    return this.miString.toUpperCase();
+}
+miObjeto.miOtraFuncion = myOtherFunc;
+miObjeto.miOtraFuncion(); // = "¡HOLA MUNDO!"
+
+// Podemos especificar el contexto en el que una función será llamada con los comandos
+// 'call' o 'apply'.
+
+var otraFuncion = function(otroString){
+    return this.miString + otroString;
+}
+otraFuncion.call(miObjeto, " y hola Luna!"); // = "¡Hola Mundo! y hola Luna!"
+
+// 'apply' es casi idéntico, pero recibe un arreglo como argumento.
+
+otraFuncion.apply(miObjeto, [" y hola Sol!"]); // = "¡Hola Mundo! y hola Sol!"
+
+// Esto es útil cuando estás trabajando con una función que acepta una secuencia de 
+// argumentos y quieres pasar un arreglo.
+
+Math.min(42, 6, 27); // = 6
+Math.min([42, 6, 27]); // = NaN (uh-oh!)
+Math.min.apply(Math, [42, 6, 27]); // = 6
+
+// Pero 'call' y 'apply' sólo son temporales. Cuando queremos que se quede, usamos bind.
+
+var funcionUnida = otraFuncion.bind(miObjeto);
+funcionUnida(" y hola Saturno!"); // = "¡Hola Mundo! y hola Saturno!"
+
+// Bind también puede ser usada para aplicar parcialmente (curry) una función.
+
+var producto = function(a, b){ return a * b; }
+var porDos = producto.bind(this, 2);
+porDos(8); // = 16
+
+// Cuando llamas a una función con la palabra clave 'new' un nuevo objeto es creado.
+// Se hace disponible a la función. Las funciones diseñadas para ser usadas así se
+// llaman constructores.
+
+var MiConstructor = function(){
+    this.miNumero = 5;
+}
+miNuevoObjeto = new MiConstructor(); // = {miNumero: 5}
+miNuevoObjeto.miNumero; // = 5
+
+// Todos los objetos JavaScript tienen un 'prototipo'. Cuando vas a acceder a una
+// propiedad en un objeto que no existe en el objeto el intérprete buscará en
+// el prototipo.
+
+// Algunas implementaciones de JavaScript te permiten acceder al prototipo de 
+// un objeto con la propiedad __proto__. Mientras que esto es útil para explicar
+// prototipos, no es parte del estándar; veremos formas estándar de usar prototipos
+// más adelante.
+
+var miObjeto = {
+    miString: "¡Hola Mundo!"
+};
+var miPrototipo = {
+    sentidoDeLaVida: 42,
+    miFuncion: function(){
+        return this.miString.toLowerCase()
+    }
+};
+
+miObjeto.__proto__ = miPrototipo;
+miObjeto.sentidoDeLaVida; // = 42
+
+// Esto funcionan también para funciones.
+miObjeto.miFuncion(); // = "hello world!"
+
+// Por supuesto, si la propiedad que buscas no está en el prototipo, 
+// se buscará en el prototipo del prototipo.
+miPrototipo.__proto__ = {
+    miBoolean: true
+};
+miObjeto.miBoolean; // = true
+
+// Esto no involucra ningún copiado, cada objeto guarda una referencia a su 
+// prototipo. Esto significa que podemos alterar el prototipo y nuestros
+// cambios serán reflejados en todos lados.
+miPrototipo.sentidoDeLaVida = 43;
+miObjeto.sentidoDeLaVida; // = 43
+
+// Mencionabamos anteriormente que __proto__ no está estandarizado, y que no 
+// existe una forma estándar de acceder al prototipo de un objeto. De todas formas.
+// hay dos formas de crear un nuevo objeto con un prototipo dado.
+
+// El primer método es Object.create, el cual es una adición reciente a JavaScript,
+// y por lo tanto, no disponible para todas las implementaciones aún.
+var miObjeto = Object.create(miPrototipo);
+miObjeto.sentidoDeLaVida; // = 43
+
+// El segundo método, el cual trabaja en todos lados, tiene que ver con los 
+// constructores. Los constructores tienen una propiedad llamada prototype.
+// Este NO ES el prototipo de la función constructor; es el prototipo que
+// se le da a los nuevos objetos cuando son creados con la palabra clave
+// new.
+
+MiConstructor.prototype = {
+    miNumero: 5,
+    getMiNumero: function(){
+        return this.miNumero;
+    }
+};
+var miNuevoObjeto2 = new MiConstructor();
+miNuevoObjeto2.getMiNumero(); // = 5
+miNuevoObjeto2.miNumero = 6
+miNuevoObjeto2.getMiNumero(); // = 6
+
+// Los tipos que vienen por defecto en JavaScript (como Strings y números)
+// también tienen constructores que crean objetos equivalentes.
+var miNumero = 12;
+var miNumeroObjeto = new Number(12);
+miNumero == miNumeroObjeto; // = true
+
+// No son exactamente iguales.
+typeof miNumero; // = 'number'
+typeof miNumeroObjeto; // = 'object'
+miNumero === miNumeroObjeyo; // = false
+if (0){
+    // Este código no se ejecutará porque 0 es false.
+}
+
+// Aún así, los objetos que envuelven y los prototipos por defecto comparten
+// un prototipo. así que puedes agregar funcionalidades a un string de la 
+// siguiente forma:
+String.prototype.primerCaracter = function(){
+    return this.charAt(0);
+}
+"abc".primerCaracter(); // = "a"
+
+// Este hecho se usa normalmente en "polyfilling", lo cual es implementar
+// nuevas funciones a JavaScript en un JavaScript más viejo, así que pueda ser
+// compatible con ambintes más viejos de JavaScript (por ejemplo, navegadores viejos).
+
+// Por ejemplo, mencionabamos que Object.create no está aún disponible en todas
+// las implementaciones, pero podemos hacerlo con polyfill:
+if (Object.create === undefined){ // esta validación sirve para no sobreescribir
+    Object.create = function(proto){
+        // hace un constructor temporal con el prototipo correcto
+        var Constructor = function(){};
+        Constructor.prototype = proto;
+        // y luego lo usamos para hacer un objeto con el prototipo
+        // correcto.
+        return new Constructor();
+    }
+}
+```
+
 ---
 
 ## Enlaces de interés
 
+- <https://github.com/sorrycc/awesome-javascript>
+- <https://github.com/ryanmcdermott/clean-code-javascript>
 - <https://lenguajejs.com>
 - <https://developer.mozilla.org/es/docs/Web/JavaScript>
+- <https://developer.mozilla.org/es/docs/Web/JavaScript/Language_overview>
 - <https://github.com/CodeKommissar/JavaScript-Elocuente/blob/master/00_intro.md>
 - <https://overapi.com/javascript>
 - <https://htmlcheatsheet.com/js/>
@@ -567,6 +1450,10 @@ result; // "Barry"
 - <https://cheatsheets.shecodes.io/javascript>
 - <https://roadmap.sh/javascript>
 - <https://learnxinyminutes.com/docs/es-es/javascript-es/>
+- <https://javascript.info/>
+- <https://www.javascripttutorial.net/>
+- <https://exploringjs.com/es6/>
+- <https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript>
 - <https://jsfiddle.net/>
 
 ## Licencia
