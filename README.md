@@ -479,6 +479,8 @@ isNaN({}); // true : conversion fails
 isNaN([1, 2]); // true : converted to "1, 2", which can't be converted to a number
 ```
 
+[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN)
+
 #### Conversión de tipos de datos
 
 JavaScript es un lenguaje **_tipado dinámicamente_**. Esto significa que no hay que especificar el tipo de dato de una variable cuando se declara. También significa que los tipos de datos se convierten automáticamente según sea necesario durante la ejecución del script.
@@ -535,6 +537,8 @@ console.log(z1); // imprime 'Infinity'
 ```
 
 El valor **undefined** se comporta como **NaN** en contextos numéricos mientras que **null** se comporta como un **0**.
+
+[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
 
 #### Valores booleanos
 
@@ -647,6 +651,8 @@ console.log("   Hola, mundo!   ".trim()); // Imprime "Hola, mundo!"
 // 'split(separador)' divide la cadena en un array de subcadenas utilizando el separador proporcionado.
 console.log("Hola, mundo!".split(", ")); // Imprime ["Hola", "mundo!"]
 ```
+
+[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 ### Operadores
 
@@ -842,6 +848,326 @@ for (let key in objeto) {
   console.log(key, objeto[key]);
 }
 
+```
+
+## Colecciones
+
+### Arrays
+
+Un arreglo o _array_ es una estructura de datos. En JavaScript los arrays son **objetos**.
+
+Los arrays son **dinámicos** y su tamaño se puede modificar después de ser creados.
+
+Además, son **heterogéneos**, lo que significa que pueden almacenar a la vez distintos tipos.
+
+```js
+// Crear un array vacío
+let myList = [];
+let otherList = new Array();
+
+// Inicialización posterior
+myList = [1, 2, 3, 4];
+
+// Crear e inicializar un array
+let fruits = ["banana", "apple", "orange"];
+let mix = new Array('banana', 3, true, ['John', 'Doe'], {'firstName': 'John', 'lastName': 'Smith'});
+
+// Array con elementos indefinidos
+let itemsUndefined = ["a", "b", , , "d"];
+
+// Formas de recorrer un array
+// Este loop no evita las posiciones indefinidas
+for (let i = 0; i < fruits.length; i++) {
+  console.log(`Fruits: ${fruits[i]}`);
+}
+
+// Este loop evita las posiciones indefinidas
+fruits.forEach(function(fruit) {
+  console.log(`Fruits: ${fruit}`);
+});
+
+// Este loop evita las posiciones indefinidas
+let fruits = ["banana", "apple", , , "orange"];
+for (let index in fruits) {
+  console.log(`Fruits: ${fruits[index]}`);
+}
+// Fruits: banana
+// Fruits: apple
+// Fruits: orange
+
+// Estandar ES2015 'for...of'
+// Este loop no evita las posiciones indefinidas
+let fruits = ["banana", "apple", , , "orange"];
+for (let fruit of fruits) {
+  console.log(`Fruits: ${fruit}`);
+}
+// Fruits: banana
+// Fruits: apple
+// Fruits: undefined
+// Fruits: undefined
+// Fruits: orange
+```
+
+```js
+let dogs = ["Bulldog", "Beagle", "Labrador"]; 
+
+dogs.toString();                        // convert to string: results "Bulldog,Beagle,Labrador"
+dogs.join(" * ");                       // join: "Bulldog * Beagle * Labrador"
+dogs.pop();                             // remove last element
+dogs.push("Chihuahua");                 // add new element to the end
+dogs[dogs.length] = "Chihuahua";        // the same as push
+dogs.shift();                           // remove first element
+dogs.unshift("Chihuahua");              // add new element to the beginning
+delete dogs[0];                         // change element to undefined (not recommended)
+dogs.splice(2, 0, "Pug", "Boxer");      // add elements (where, how many to remove, element list)
+let animals = dogs.concat(cats,birds);  // join two arrays (dogs followed by cats and birds)
+dogs.slice(1,4);                        // elements from [1] to [4-1]
+dogs.sort();                            // sort string alphabetically
+dogs.reverse();                         // sort string in descending order
+x.sort(function(a, b){return a - b});   // numeric sort
+x.sort(function(a, b){return b - a});   // numeric descending sort
+highest = x[0];                         // first item in sorted array is the lowest (or highest) value
+x.sort(function(a, b){return 0.5 - Math.random()});     // random order sort
+
+dogs.includes("Beagle"); // ES20015 - 'true' si existe el elemento
+dogs.indexOf("Beagle"); // imprime la posición si encuentra el elemento o -1
+dogs.lastIndexOf("Beagle") // imprime la posición si encuentra el elemento o -1
+```
+
+La versión estándar ES2015 incorporó el operador de **propagación o _spread_** `...` aplicable a iterables, como los arrays, un string o un objeto.
+
+```js
+let [a, b, c] = ["banana", "apple", "orange"];
+console.log(a); // imprime 'banana'
+console.log(b); // imprime 'apple'
+console.log(c); // imprime 'orange'
+
+let fruits = ["banana", "apple", "orange"];
+let [a, b, c] = [...fruits];   // 'spread' operator
+console.log(a); // imprime 'banana'
+console.log(b); // imprime 'apple'
+console.log(c); // imprime 'orange'
+
+let [a, b, ...array] = ["banana", "apple", "orange", "kiwi", "watermelon"];
+console.log(a); // imprime 'banana'
+console.log(b); // imprime 'apple'
+console.log(array); // imprime [ 'orange', 'kiwi', 'watermelon' ]
+```
+
+[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+
+### Set
+
+Los conjuntos o _sets_ son una estructura de datos y se consideran como **objetos**. Aparecieron en ES2015.
+
+A diferencia de los arrays, los sets no admiten valores duplicados.
+
+```js
+// Declarar un conjunto vacío
+let conjunto = new Set();
+let conjunto2 = new Set(["a", "b", "c"]);
+
+// Añadir elementos
+conjunto.add("a");
+conjunto.add("b").add("c").add("d");
+
+const mySet1 = new Set();
+
+mySet1.add(1); // Set(1) { 1 }
+mySet1.add(5); // Set(2) { 1, 5 }
+mySet1.add(5); // Set(2) { 1, 5 }
+mySet1.add("some text"); // Set(3) { 1, 5, 'some text' }
+const o = { a: 1, b: 2 };
+mySet1.add(o);
+
+mySet1.add({ a: 1, b: 2 }); // o is referencing a different object, so this is okay
+
+mySet1.has(1); // true
+mySet1.has(3); // false, since 3 has not been added to the set
+mySet1.has(5); // true
+mySet1.has(Math.sqrt(25)); // true
+mySet1.has("Some Text".toLowerCase()); // true
+mySet1.has(o); // true
+
+mySet1.size; // 5
+
+mySet1.delete(5); // removes 5 from the set
+mySet1.has(5); // false, 5 has been removed
+
+mySet1.size; // 4, since we just removed one value
+
+mySet1.add(5); // Set(5) { 1, 'some text', {...}, {...}, 5 }
+
+console.log(mySet1); // Set(5) { 1, "some text", {…}, {…}, 5 }
+
+mySet1.clear(); // {}
+```
+
+```js
+// ITERAR SOBRE LOS SETS
+for (const item of mySet1) {
+  console.log(item);
+}
+// 1, "some text", { "a": 1, "b": 2 }, { "a": 1, "b": 2 }, 5
+
+for (const item of mySet1.keys()) {
+  console.log(item);
+}
+// 1, "some text", { "a": 1, "b": 2 }, { "a": 1, "b": 2 }, 5
+
+for (const item of mySet1.values()) {
+  console.log(item);
+}
+// 1, "some text", { "a": 1, "b": 2 }, { "a": 1, "b": 2 }, 5
+
+// key and value are the same here
+for (const [key, value] of mySet1.entries()) {
+  console.log(key);
+}
+// 1, "some text", { "a": 1, "b": 2 }, { "a": 1, "b": 2 }, 5
+
+// Convert Set object to an Array object, with Array.from
+const myArr = Array.from(mySet1); // [1, "some text", {"a": 1, "b": 2}, {"a": 1, "b": 2}, 5]
+
+// the following will also work if run in an HTML document
+mySet1.add(document.body);
+mySet1.has(document.querySelector("body")); // true
+
+// converting between Set and Array
+const mySet2 = new Set([1, 2, 3, 4]);
+console.log(mySet2.size); // 4
+console.log([...mySet2]); // [1, 2, 3, 4]
+
+// intersect can be simulated via
+const intersection = new Set([...mySet1].filter((x) => mySet2.has(x)));
+
+// difference can be simulated via
+const difference = new Set([...mySet1].filter((x) => !mySet2.has(x)));
+
+// Iterate set entries with forEach()
+mySet2.forEach((value) => {
+  console.log(value);
+});
+// 1
+// 2
+// 3
+// 4
+```
+
+```js
+// UTILIZAR UN ARRAY EN UN SET
+const myArray = ["value1", "value2", "value3"];
+
+// Use the regular Set constructor to transform an Array into a Set
+const mySet = new Set(myArray);
+
+mySet.has("value1"); // returns true
+
+// Use the spread syntax to transform a set into an Array.
+console.log([...mySet]); // Will show you exactly the same Array as myArray
+
+// Use to remove duplicate elements from an array
+const numbers = [2, 13, 4, 4, 2, 13, 13, 4, 4, 5, 5, 6, 6, 7, 5, 32, 13, 4, 5];
+
+console.log([...new Set(numbers)]); // [2, 13, 4, 5, 6, 7, 32]
+```
+
+[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
+
+### Map
+
+Los mapas o _maps_ son estructuras de tipo **clave-valor**, en las cuales las claves no se pueden repetir y tienen asociado un valor. Se consideran objetos y forman parte del estándar ES2015.
+
+Tanto las claves como los valores pueden ser de cualquier tipo. En un mismo mapa no pueden haber dos elementos con la misma clave, pero sí pueden repetir valor.
+
+```js
+const myMap = new Map();
+
+const keyString = "a string";
+const keyObj = {};
+const keyFunc = function () {};
+
+// setting the values
+myMap.set(keyString, "value associated with 'a string'");
+myMap.set(keyObj, "value associated with keyObj");
+myMap.set(keyFunc, "value associated with keyFunc");
+
+myMap.set(1, "a").set(2, "b").set(3, "c");
+
+console.log(myMap.size); // 3
+
+console.log(myMap.has(1)) // true
+console.log(myMap.has(5)) // false
+
+myMap.delete(2);
+
+// getting the values
+console.log(myMap.get(keyString)); // "value associated with 'a string'"
+console.log(myMap.get(keyObj)); // "value associated with keyObj"
+console.log(myMap.get(keyFunc)); // "value associated with keyFunc"
+
+console.log(myMap.get("a string")); // "value associated with 'a string'", because keyString === 'a string'
+console.log(myMap.get({})); // undefined, because keyObj !== {}
+console.log(myMap.get(function () {})); // undefined, because keyFunc !== function () {}
+```
+
+```js
+// UTILIZAR UN ARRAY CON UN MAP
+const kvArray = [
+  ["key1", "value1"],
+  ["key2", "value2"],
+];
+
+// Use the regular Map constructor to transform a 2D key-value Array into a map
+const myMap = new Map(kvArray);
+
+console.log(myMap.get("key1")); // "value1"
+
+// Use Array.from() to transform a map into a 2D key-value Array
+console.log(Array.from(myMap)); // Will show you exactly the same Array as kvArray
+
+// A succinct way to do the same, using the spread syntax
+console.log([...myMap]);
+
+// Or use the keys() or values() iterators, and convert them to an array
+console.log(Array.from(myMap.keys())); // ["key1", "key2"]
+```
+
+```js
+// ITERAR SOBRE UN MAP
+const myMap = new Map();
+myMap.set(0, "zero");
+myMap.set(1, "one");
+
+for (const [key, value] of myMap) {
+  console.log(`${key} = ${value}`);
+}
+// 0 = zero
+// 1 = one
+
+for (const key of myMap.keys()) {
+  console.log(key);
+}
+// 0
+// 1
+
+for (const value of myMap.values()) {
+  console.log(value);
+}
+// zero
+// one
+
+for (const [key, value] of myMap.entries()) {
+  console.log(`${key} = ${value}`);
+}
+// 0 = zero
+// 1 = one
+
+myMap.forEach((value, key) => {
+  console.log(`${key} = ${value}`);
+});
+// 0 = zero
+// 1 = one
 ```
 
 ## Funciones
