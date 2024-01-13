@@ -293,7 +293,9 @@ console.log(y); // ERROR!! ReferenceError: y is not defined
 
 #### Ámbito de las variables
 
-Cuando se declara una variable fuera de cualquier función, se denomina **variable global**, porque está disponible para cualquier otro código en el documento actual. Cuando se declara una variable dentro de una función, se llama **variable local**, porque solo está disponible dentro de esa función.
+Cuando se declara una variable fuera de cualquier función, se denomina **variable global**, porque está disponible para cualquier otro código en el documento actual.
+
+Cuando se declara una variable dentro de una función tanto con `const` como `var` o `let`, se llama **variable local**, porque solo está disponible dentro de esa función.
 
 ```js
 // El ámbito de 'x' es el contexto global (o el de una función si este código estuviera 
@@ -1176,7 +1178,11 @@ myMap.forEach((value, key) => {
 
 Un lenguaje de programación se dice que tiene **funciones de primera clase** cuando las funciones en ese lenguaje son tratadas como cualquier otra variable. Por ejemplo, en ese lenguaje, una función puede ser pasada como argumento a otras funciones, puede ser retornada por otra función y puede ser asignada a una variable.
 
+Como identificador/nombre de una función se aplican las mismas reglas que los identificadores de las variables. Debe comenzar con una letra, un guión bajo (\_) o un signo de dólar (`$`). Los siguientes caracteres, además de lo indicado anterioremente, pueden incluir dígitos (0-9). La única restricción es que no puede **empezar por un número**.
+
 #### Asignar función a una variable
+
+La variable es una **referencia** a la función.
 
 ```js
 // Asignamos una función anónima a una variable
@@ -1218,7 +1224,7 @@ Podemos devolver una función porque JavaScript trata la función como un _value
 
 Siguiendo con el ejemplo, para invocar la función devuelta se pueden usar dos formas:
 
-##### Usando una variable
+- Usando una variable
 
 ```js
 const diHola = function () {
@@ -1230,7 +1236,7 @@ const miFuncion = diHola(); // Asignamos la función devuelta a la variable 'miF
 miFuncion(); // Invocamos la función devuelta
 ```
 
-##### Usando paréntesis dobles
+- Usando paréntesis dobles
 
 ```javascript
 function diHola() {
@@ -1239,6 +1245,120 @@ function diHola() {
   };
 }
 diHola()(); // Usamos paréntesis dobles para invocar también la función retornada
+```
+
+### Funciones flecha
+
+Esta forma de declarar una función sólo sirve con funciones anónimas.
+
+```js
+// Función anónima
+function(x) {
+  return 3*x;
+}
+
+// Notación en forma de función flecha
+const triple = x => 3*x;
+```
+
+Si hay dos o más parámetros, se utilizan los paréntesis:
+
+```js
+// Función anónima
+function(x, y) {
+  return x + y;
+}
+
+// Notación en forma de función flecha
+const suma = (x, y) => x + y;
+```
+
+Si no hay parámetros, hay que colocar paréntesis vacíos:
+
+```js
+// Función anónima
+function() {
+  console.log("Hello World!!);
+}
+
+// Notación en forma de función flecha
+const saludo = () => {console.log("Hello World!!");}
+```
+
+Si no hay `return` en el cuerpo de la función o requiere de varias líneas, es necesario el uso de llaves.
+
+### Argumentos de la función
+
+Los tipos básicos como booleanos, números o strings se pasan **por valor** en los argumentos de una función, es decir, se envía una copia de los mismos.
+
+Los tipos complejos como arrays, conjuntos, mapas o cualquier otro objeto se pasan **por referencia**, por lo que al modificar un objeto dentro de una función se modifica el original.
+
+En JavaScript los parámetos de las funciones pueden tener **valor por defecto**. Eso convierte a dicho parámetro como **opcional**:
+
+```js
+// Notación en forma de función flecha
+const saludo = (test = "World") => {
+  console.log(`Hello ${test}!!!`);
+}
+
+saludo(); // imprime 'Hello World!!!'
+saludo("friend"); // imprime "Hello friend!!!
+```
+
+Una función puede tener un **número variable** de parámetros. Para acceder a esos parámetros se utiliza el operador de propagación o _spread_.
+
+Si la función tiene parámetros definidos, se colocan primero y luego el operador de propagación:
+
+```js
+function test(x, y, ...otros) {
+  console.log(`${x}, ${y}, ${otros}`);
+}
+```
+
+### Funciones callback
+
+En JavaScript, los _callbacks_ son funciones que se pasan como argumentos a otras funciones y se ejecutan después de que cierta operación ha sido completada. Los _callbacks_ son comúnmente utilizados en situaciones asíncronas, como en llamadas a API, manejo de eventos, o tareas que toman tiempo.
+
+En términos sencillos, una función de _callback_ es una función que se pasa como argumento a otra función y se invoca después de que la operación principal ha sido completada.
+
+```js
+function operacionAsincrona(callback) {
+  // Simulación de una operación que toma tiempo
+  setTimeout(function() {
+    console.log("Operación completada");
+    callback(); // Llamada al callback después de completar la operación
+  }, 2000);
+}
+
+function miCallback() {
+  console.log("Callback ejecutado");
+}
+
+// Llamando a la función con el callback
+operacionAsincrona(miCallback);
+```
+
+Es muy habitual usar funciones _callback_ usando funciones anónimas o funciones flecha:
+
+```js
+function escribe(x, accion) {
+  console.log(accion(x));
+}
+
+function doble(y) {
+  return y * 2;
+}
+
+// Pasándole el nombre de la función definida
+escribe(4, doble);
+
+// Pasándole una función anónima
+escribe(8, function(y) {
+  return y * 2;
+});
+
+// Pasándole una función flecha
+escribe(12, y => y * 2);
 ```
 
 ### Expresión de función ejecutada inmediatamente o 'IIFE'
@@ -1271,6 +1391,72 @@ var result = (function () {
 })();
 // Immediately creates the output:
 result; // "Barry"
+```
+
+## Programación orientada a objetos
+
+Los objetos más sencillos que podemos crear en JavaScript son los llamados **literales** o **instancias directas**:
+
+```js
+let punto = new Object();
+// Propiedades
+punto.x = 5;
+punto.y = 10;
+// Métodos
+punto.mostrarCoordenadas = function() {
+  console.log(`x=${this.x}, y=${this.y}`);
+}
+
+punto.mostrarCoordenadas(); // imprime 'x=5, y=10'
+```
+
+Se puede utilizar la forma `let punto = new Object();` o la forma más directa `let punto = {};`. Las llaves indican que es un objeto vacío.
+
+Otra posibilidad es crear el objeto y directamente asignarle propiedades y métodos:
+
+```js
+let punto = {
+  x:15,
+  y:20,
+  mostrarCoordenadas: function() {
+    console.log(`x=${this.x}, y=${this.y}`);
+  }
+}
+
+punto.mostrarCoordenadas(); // imprime 'x=15, y=20'
+```
+
+Podemos recorrer las propiedades de un objeto con el bucle `for...in`:
+
+```js
+for (let prop in punto) {
+  console.log(`${prop} - ${punto[prop]}`);
+}
+```
+
+Para borrar una propiedad se puede utilizar el operador `delete`:
+
+```js
+delete punto.x;
+```
+
+### Constructores
+
+Una forma de crear objetos es usando un **constructor** mediante el operador `new`:
+
+```js
+// Función constructora
+function Punto(coordX, coordY) {
+  this.x = coordX;
+  this.y = coordY;
+
+  this.mostrarCoordenadas = () => {console.log(`x=${this.x}, y=${this.y}`)};
+}
+
+// Instanciar un objeto
+let punto = new Punto(5, 10);
+
+punto.mostrarCoordenadas(); // // imprime 'x=5, y=10'
 ```
 
 ## Resumen
