@@ -622,6 +622,14 @@ console.log('\u{1F601}'); // Imprime el emoji 😁
 console.log(String.fromCodePoint(0x1F601)); // Imprime el emoji 😁 
 ```
 
+En JavaScript las cadenas se comparan con el operador `==`, a diferencia de Java:
+
+```js
+if ("home" == "home") {
+  console.log("Equals");
+}
+```
+
 En JavaScript los strings disponen de algunas funciones y propiedades como por ejemplo:
 
 ```js
@@ -1453,11 +1461,156 @@ function Punto(coordX, coordY) {
   this.mostrarCoordenadas = () => {console.log(`x=${this.x}, y=${this.y}`)};
 }
 
-// Instanciar un objeto
+// Instanciar un objeto con el operador 'new'
 let punto = new Punto(5, 10);
 
 punto.mostrarCoordenadas(); // // imprime 'x=5, y=10'
 ```
+
+Con el operador `instanceof` podemos saber el tipo de un objeto. Al igual que Java, los objetos heredan de la clase `Object`:
+
+```js
+console.log(punto instanceof Punto); // imprime 'true'
+console.log(punto instanceof Object); // imprime 'true'
+```
+
+Otra posibilidad introducida en el estándar ES2015 para comprobar el tipo de un objeto es una propiedad que tienen todos los objetos a la que se accede por `constructor.name`:
+
+```js
+console.log(punto.constructor.name);
+```
+
+### Prototipos
+
+En JavaScript, los prototipos son una parte fundamental del sistema de **herencia** en el lenguaje.
+
+Cada objeto en JavaScript tiene un prototipo, que es esencialmente un objeto del cual hereda propiedades y métodos. Cuando se intenta acceder a una propiedad o método de un objeto, JavaScript busca primero en el propio objeto y, si no lo encuentra, busca en su prototipo y así sucesivamente hasta llegar al objeto `Object.prototype`, que es la cima de la cadena de prototipos.
+
+Todos los objetos procedentes de la misma función constructora tienen el mismo prototipo con el que enlazan. Es la parte común de los objetos del mismo tipo. Además, este enlace es dinámico por lo que cualquier cambio en el prototipo se ve reflejado en todos los objetos que lo enlazan.
+
+El acceso al prototipo de un objeto se puede hacer con la propiedad `__proto__`, mediante una forma equivalente con el método `Object.getPrototypeOf()` o con la propiedad `prototype` de la clase en cuestión:
+
+```js
+console.log(punto.__proto__);
+console.log(Object.getPrototypeOf(punto));
+console.log(Punto.prototype);
+```
+
+Para **modificar** un prototipo usamos la propiedad `prototype`. De esta forma podemos añadir propiedades y métodos al prototipo:
+
+```js
+// Se añade una propiedad llamada 'z' con valor 10
+Punto.prototype.z = 10;
+
+// Se añade un método al prototipo
+Punto.prototype.sumarXY = function() {
+  return this.x + this.y;
+}
+
+// Instanciar un objeto con el operador 'new'
+let punto = new Punto(5, 10);
+
+console.log(punto.sumarXY()); // imprime '15'
+```
+
+Si una instancia de una objeto modifica el valor de una propiedad heredada, ese valor tiene **prioridad** sobre el valor del prototipo. Pasa lo mismo con los métodos, si un objeto redefine un método, éste tiene prioridad sobre el método del prototipo:
+
+```js
+// Se modifica el valor de la propiedad 'z' para una instancia
+punto.z = 20;
+
+console.log(punto.z); // imprime '20'
+
+// Podemos acceder al valor en el prototipo
+console.log(punto.__proto__.z); // imprime '10'
+```
+
+Un detalle es que se puede modificar incluso el prototipo de los objetos estándar. En este ejemplo se modifica el prototipo del tipo `Array` añadiendo un nuevo método:
+
+```js
+Array.prototype.obtenerPares = function() {
+  return this.filter(x => x%2 == 0);
+}
+
+let a = [1, 2, 3, 4, 5, 6, 7, 8];
+console.log(a.obtenerPares()); // imprime '[ 2, 4, 6, 8 ]'
+```
+
+## Notación JSON
+
+JSON es el acrónimo de **_JavaScript Objects Notation**__ que se creó en 2001 por parte de Douglas Crockford.
+
+La notación JSON es un formato de intercambio de datos ligero y legible por humanos. Las características clave de JSON:
+
+- **Formato de texto**: JSON utiliza un formato de texto legible por humanos, lo que facilita su lectura y escritura. Está compuesto por pares clave-valor.
+
+- **Datos estructurados**: Permite representar datos estructurados utilizando objetos y arreglos. Los objetos se definen entre llaves `{}` y contienen pares clave-valor separados por comas. Los arreglos se definen entre corchetes `[]` y contienen valores separados por comas:
+
+```json
+{
+  "nombre": "Juan",
+  "edad": 30,
+  "ciudad": "Ejemploville"
+}
+
+["manzana", "banana", "uva"]
+```
+
+- **Tipos de datos compatibles**: JSON admite varios tipos de datos, incluyendo cadenas de texto, números, booleanos, objetos, arreglos y el valor nulo (null).
+
+- **Anidamiento**: Se pueden anidar objetos y arreglos dentro de otros objetos y arreglos para representar estructuras más complejas:
+
+```json
+{
+  "persona": {
+    "nombre": "Ana",
+    "edad": 25
+  },
+  "hobbies": ["leer", "viajar"]
+}
+```
+
+- **Extensibilidad**: Aunque originalmente diseñado para JavaScript, JSON es un formato independiente de lenguaje y se utiliza en muchos entornos de programación. Es comúnmente utilizado en combinación con HTTP para intercambiar datos entre el cliente y el servidor.
+
+- **Sintaxis estricta**: JSON tiene una sintaxis simple y estricta. Las claves y cadenas de texto deben ir entre comillas dobles, y la coma separa los elementos en objetos y arreglos.
+
+La notación JSON es ampliamente utilizada en la transmisión y almacenamiento de datos, y su popularidad ha crecido en gran medida debido a su simplicidad y versatilidad.
+
+JavaScript aporta un objeto global llamado `JSON` que permite manipular datos en este formato. Este objeto tiene dos métodos:
+
+- **`JSON.stringify()`**: convierte un objeto o valor de JavaScript en una cadena de texto JSON, opcionalmente reemplaza valores si se indica una función de reemplazo, o si se especifican las propiedades mediante un array de reemplazo.
+
+- **`JSON.parse()`**: analiza una cadena de texto en formato JSON, transformando opcionalmente el valor producido por el análisis al objeto JavaScript. Si no es correcto devuelve una excepción de tipo `SyntaxError`.
+
+[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/JSON)
+
+## Objetos predefinidos
+
+### Math
+
+Se trata de un objeto global que facilita la ejecución de algunas operaciones matemáticas.
+
+Tiene disponibles algunas propiedades como `Math.E` o `Math.PI` y métodos como `Math.abs(x)` o `Math.random()`.
+
+[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Math)
+
+### Date
+
+Este es otro objeto global que permite trabajar con fechas en JavaScript.
+
+```js
+let hoy = new Date();
+console.log(hoy); // Imprime '2024-01-24T18:39:49.207Z'
+```
+
+El objeto `Date` también tiene algunos métodos estáticos:
+
+```js
+// Devuelve el número de milisegundos transcurridos desde el 1 de Enero de 1970, 00:00:00 UTC
+console.log(Date.now()); // Imprime '1706121708552'
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
 ## Resumen
 
