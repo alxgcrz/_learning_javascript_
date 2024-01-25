@@ -260,7 +260,7 @@ Se puede asignar un valor directamente a una variable, como por ejemplo `x = 4`.
 
 Una variable declarada usando la instrucción **var** o **let** sin un valor asignado especificado tiene el valor de **undefined**.
 
-```javascript {.numberLines}
+```js
 var x; // Declaración sin asignación de valor. Tiene el valor de 'undefined'
 var y = 10; // Declaración y asignación de valor
 
@@ -548,7 +548,7 @@ Los valores booleanos sólo pueden tomar los valores **true** o **false**.
 
 Sin embargo, en JavaScript todo valor o expresión se comporta como un valor booleano. Mediante la función `Boolean()` podemos imprimir el valor booleano de cualquier otro valor:
 
-```js {.numberLines}
+```js
 // Se comportan como 'true'
 console.log(Boolean(true));
 console.log(Boolean(1));
@@ -777,6 +777,8 @@ x **= 5; // Equivale a x = x ** 5;
 
 ## Control de flujo
 
+### Condicinal
+
 ```js
 // Asignación condicinal "condicion ? valor_si_true : valor_si_false"
 true ? 5 : 2; // Devuelve 5
@@ -824,6 +826,8 @@ switch (expresion) {
 }
 ```
 
+### Bucles
+
 ```js
 // Bucles 'while'
 while (condición) {
@@ -840,7 +844,7 @@ for (inicialización; condición; actualización) {
   // Código a ejecutar en cada iteración
 }
 
-// Bucle 'for..of' para iterar sobre elementos de objetos iteralbles como arrays
+// Bucle 'for..of' para iterar sobre elementos de objetos iterables como arrays
 let array = [1, 2, 3, 4, 5];
 for (let element of array) {
   console.log(element);
@@ -1611,6 +1615,309 @@ console.log(Date.now()); // Imprime '1706121708552'
 ```
 
 [Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+## Manipulación del DOM
+
+El **DOM _(Document Object Model)_** es una parte de lo que se conoce como **BOM _(Browser Objects Model)_**.
+
+El **BOM** no forma parte del estándar de JavaScript pero la mayoría de navegadores han igualado la forma de trabajar con estos objetos por lo que se puede hablar de un uso estandarizado de los objetos en un navegador.
+
+El objeto raíz es el objeto **'window'**. Este objeto es tan importante que puede obviarse, es decir, se usa `alert()` en vez de `window.alert()`.
+
+La jerarquía del **BOM** en JavaScript sigue una estructura que involucra varios objetos:
+
+- **window (ventana)**: El objeto raíz en la jerarquía del BOM. Representa la ventana del navegador y proporciona acceso a otros objetos del BOM. Casi todas las variables y funciones globales en JavaScript son propiedades y métodos del objeto `window`.
+
+```js
+// Ejemplo de acceso a la ventana actual a través de window
+window.alert("Hola, mundo!");
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Window)
+
+- **document (documento)**: Aunque el modelo de objeto del documento (DOM) se ocupa principalmente de la estructura y contenido de la página HTML, el objeto `document` también se considera parte del BOM. Proporciona métodos para acceder y manipular el contenido HTML del documento.
+
+```js
+// Ejemplo de acceso al documento a través de window
+window.document.getElementById("miElemento");
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Document)
+
+- **navigator (navegador)**: Representa información sobre el navegador del usuario, como el nombre, la versión y las características. Este objeto posee numerosas propiedades de sólo lectura:
+
+```js
+// Ejemplo de acceso al objeto navigator a través de window
+window.navigator.userAgent;
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Navigator)
+
+- **location (ubicación)**: Proporciona información sobre la URL actual del documento y permite la manipulación de la ubicación del navegador.
+
+```js
+// Ejemplo de acceso al objeto location a través de window
+window.location.href = "https://www.ejemplo.com";
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Location)
+
+- **history (historial)**: Permite la manipulación del historial de navegación del usuario.
+
+```js
+// Ejemplo de acceso al objeto history a través de window
+window.history.back();
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/History)
+
+- **screen (pantalla)**: Proporciona información sobre las propiedades de la pantalla del dispositivo del usuario.
+
+```js
+// Ejemplo de acceso al objeto screen a través de window
+window.screen.width;
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Screen)
+
+### DOM
+
+El Modelo de Objetos del Documento (**DOM**, por sus siglas en inglés) es una API para manipular **árboles DOM** de documentos HTML y XML (entre otros documentos en forma de árbol).
+
+Un árbol DOM es una **estructura en forma de árbol** cuyos nodos representan el contenido de un documento HTML o XML. Cada documento HTML o XML tiene una representación de árbol DOM.
+
+Cuando un navegador web analiza un documento HTML, crea un árbol DOM y luego lo usa para mostrar el documento.
+
+Claramente JavaScript es el lenguaje que más se utiliza para manipular el DOM pero es una estructura de objetos independiente de todo lenguaje.
+
+### Tipos de nodos
+
+Cada nodo que forma parte de un árbol DOM de un documento se corresponde con un tipo de nodo.
+
+La propiedad `Node.nodeType` devuelve un _unsigned short_ que representa el tipo de nodo:
+
+```js
+console.log(document.nodeType); // Imprime '9'
+console.log(document.head.nodeType); // Imprime '1'
+```
+
+- **Node.ELEMENT_NODE = 1**
+- **Node.ATTRIBUTE_NODE = 2**
+- **Node.TEXT_NODE = 3**
+- **Node.CDATA_SECTION_NODE = 4**
+- **Node.PROCESSING_INSTRUCTION_NODE = 7**
+- **Node.COMMENT_NODE = 8**
+- **Node.DOCUMENT_NODE = 9**
+- **Node.DOCUMENT_TYPE_NODE = 10**
+- **Node.DOCUMENT_FRAGMENT_NODE = 11**
+
+La propiedad `Node.nodeName` devuelve una cadena que contiene el nombre del nodo
+
+```js
+console.log(document.nodeName);  // Imprime '#document'
+console.log(document.head.nodeName);  // Imprime 'HEAD'
+```
+
+- **Document = '#document'**
+- **Comment = '#comment'**
+- **Text = '#text'**
+- **Element = Nombre de la etiqueta del elemento**
+- **Attr = Nombre del atributo**
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Node)
+
+### Selección de elementos del DOM
+
+El objeto `document` proporciona numerosos métodos para seleccionar elementos:
+
+- **`document.getElementById(id)`**: selecciona un elemento por su identificador o _id_. Si no se encuentra el elemento retorna `null`.
+
+- **`document.getElementsByName(name)`**: retorna un `NodeList` con todos los elementos que comparten el mismo atributo _name_.
+
+- **`document.getElementsByTagName(name)`**: retorna un `NodeList` con todos los elementos que tengan ese nombre de etiqueta.
+
+- **`document.getElementsByClassName(name)`**: retorna un `NodeList` con todos los elementos que tienen asignada una clase determinada de CSS.
+
+- **`document.querySelector(selector)`**: retorna el primer elemento del documento que coincida con el grupo especificado de selectores.
+
+- **`document.querySelectorAll(selector)`**: retorna un `NodeList` que representa una lista de elementos del documento que coincida con el grupo especificado de selectores.
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Document#m%C3%A9todos)
+
+### Manipulación de atributos
+
+- **`Element.getAttribute(name)`**: devuelve el valor del atributo especificado. Si no existe puede devolver o `null` o una cadena vacía `""`.
+
+```js
+let list = document.querySelectorAll("li");
+for (let li of lis) {
+  console.log(li.getAtribute("class"));
+}
+```
+
+- **`Element.setAttribute(name, value)`**: establece el valor de un atributo en el elemento indicado.
+
+- **`Element.removeAttribute(name)`**: elimina un atributo del elemento especificado.
+
+- **`Element.toggleAttribute(name)`**: permite añadir un atributo al elemento si no está añadido ya o quitar el atributo con ese nombre si ya está añadido.
+
+- **`Element.hasAttribute(name)`**: devuelve un valor booleano indicando si el elemento tiene el atributo especificado o no.
+
+- **`Element.attributes`**: esta propiedad retorna los atributos de un elemento en forma de `NamedNodeList`.
+
+```js
+let listaAtributos = document.getElementById("id").attributes;
+for (let atributo of listaAtributos) {
+  console.log(`Atributo: ${atributo.name} - Valor: ${atributo.value}`);
+}
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Element#m%C3%A9todos)
+
+### Manipulación del contenido
+
+La propiedad `textContent` de un elemento permite obtener y modificar el texto que contiene ese elemento y sus descendientes.
+
+```js
+// Dado el siguiente fragmento HTML:
+//   <div id="divA">Esto <span>es</span>un texto</div>
+
+// Lee el contenido textual:
+var text = document.getElementById("divA").textContent;
+// |text| contiene la cadena "Esto es un texto".
+
+// Escribe el contenido textual:
+document.getElementById("divA").textContent = "Esto es un nuevo texto";
+// El HTML "divA" ahora contiene una nueva cadena:
+//   <div id="divA">Esto es un nuevo texto</div>
+```
+
+La propiedad `innerHTML` realiza la misma función que `textContent` pero interpretando las etiquetas HTML. Por temas de rendimiento es mejor utilizar `textContent`.
+
+```js
+document.getElementById("p1").innerHTML = "New text!";
+```
+
+Además, al interpretar las etiquetas HTML existe un riesgo de seguridad. Aunque HTMl5 especifica que no se deben ejecutar etiquetas `<script>` insertadas a través de `innerHTML` hay maneras de ejecutar JavaScript sin necesidad de utilizar el elemento `<script>`:
+
+```js
+//ejemplo 1
+var name = "Juan";
+// asumiendo que 'el' es un elemento de HTML DOM
+el.innerHTML = name; // sin peligro
+
+// ...
+
+//ejemplo 2
+name = "<script>alert('Soy Juan con una alerta molesta!')</script>";
+el.innerHTML = name; // fíjese que el texto es molesto y no es realmente lo que se esperaba.
+
+const name = "<img src='x' onerror='alert(1)'>";
+el.innerHTML = name; // con peligro, la alerta ahora si es mostrada
+```
+
+### Modificar CSS
+
+Es posible modificar el CSS de los elementos a través de los atributos `style` o `class` mediante el método `setAttribute()`.
+
+Sin embargo, al ser un característica tan importante, JavaScript proporciona métodos especiales para manipular las clases CSS de un elemento.
+
+Los elementos poseen la propiedad `style` que permite acceder directamente a las propiedades CSS de un elemento.
+
+Las propiedades se escriben en formato **CamelCase** como por ejemplo la propiedad CSS `background-color` se indica como `backgroundColor`:
+
+```js
+let intro = document.getElementById("intro");
+intro.style.backgroundColor = "green";
+```
+
+La mayoría de navegadores actuales acepta también el formato idéntico a CSS a través de corchetes:
+
+```js
+let intro = document.getElementById("intro");
+intro.style["background-color"] = "green";
+```
+
+Mediante el método `window.getComputedStyle(elemento)` se pueden consultar las propiedades CSS que se están aplicando a un elemento concreto:
+
+```js
+let intro = document.getElementById("intro");
+
+console.log(window.getComputedStyle(intro)); // Imprime todas las propiedades
+
+console.log(window.getComputedStyle(intro).fontFamily); // Imprime la propiedad 'fontFamily'
+console.log(window.getComputedStyle(intro).margin); // Imprime una propiedad 'margin'
+```
+
+Los elementos disponen de la propiedad `className` que permite asignar una clase CSS a un elemento o consultar las clases aplicadas:
+
+```js
+// <p id="intro" class="remarcado">Finding HTML Elements by Id</p>
+
+let intro = document.getElementById("intro");
+console.log(intro.className); // imprime 'remarcado'
+
+intro.className = "fondo";  // sustituye a la clase anterior
+console.log(intro.className); // imprime 'fondo'
+```
+
+Cuando un elemento tiene más de una clase CSS o se quiere añadir más clases y no sobreescribir la clases anteriores, JavaScript incorpora la propiedad `classList` a los elementos del DOM.
+
+```js
+for (let clase of intro.classList) {
+  console.log(clase);
+}
+```
+
+La propiedad `classList` dispone de una serie de métodos para facilitar el trabajo:
+
+```js
+const div = document.createElement("div");
+div.className = "foo";
+
+// our starting state: <div class="foo"></div>
+console.log(div.outerHTML);
+
+// use the classList API to remove and add classes
+div.classList.remove("foo");
+div.classList.add("anotherclass");
+
+// <div class="anotherclass"></div>
+console.log(div.outerHTML);
+
+// if visible is set remove it, otherwise add it
+div.classList.toggle("visible");
+
+// add/remove visible, depending on test conditional, i less than 10
+div.classList.toggle("visible", i < 10);
+
+// false
+console.log(div.classList.contains("foo"));
+
+// add or remove multiple classes
+div.classList.add("foo", "bar", "baz");
+div.classList.remove("foo", "bar", "baz");
+
+// add or remove multiple classes using spread syntax
+const cls = ["foo", "bar"];
+div.classList.add(...cls);
+div.classList.remove(...cls);
+
+// replace class "foo" with class "bar"
+div.classList.replace("foo", "bar");
+```
+
+### Atributos DATA
+
+En los documentos HTML existe la posibilidad de crear atributos **data**, que son atributos de datos personalizables y modificables.
+
+```js
+// <p id="libro" data-tipo="novela" data-autor="Miguel de Cervantes"></p>
+
+let libro = document.getElementById("libro");
+console.log(libro.dataset.tipo);
+console.log(libro.dataset.autor);
+```
 
 ## Resumen
 
