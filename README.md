@@ -1827,26 +1827,26 @@ Los elementos poseen la propiedad `style` que permite acceder directamente a las
 Las propiedades se escriben en formato **CamelCase** como por ejemplo la propiedad CSS `background-color` se indica como `backgroundColor`:
 
 ```js
-let intro = document.getElementById("intro");
-intro.style.backgroundColor = "green";
+let element = document.getElementById("id");
+element.style.backgroundColor = "green";
 ```
 
 La mayoría de navegadores actuales acepta también el formato idéntico a CSS a través de corchetes:
 
 ```js
-let intro = document.getElementById("intro");
-intro.style["background-color"] = "green";
+let element = document.getElementById("id");
+element.style["background-color"] = "green";
 ```
 
 Mediante el método `window.getComputedStyle(elemento)` se pueden consultar las propiedades CSS que se están aplicando a un elemento concreto:
 
 ```js
-let intro = document.getElementById("intro");
+let element = document.getElementById("id");
 
-console.log(window.getComputedStyle(intro)); // Imprime todas las propiedades
+console.log(window.getComputedStyle(element)); // Imprime todas las propiedades
 
-console.log(window.getComputedStyle(intro).fontFamily); // Imprime la propiedad 'fontFamily'
-console.log(window.getComputedStyle(intro).margin); // Imprime una propiedad 'margin'
+console.log(window.getComputedStyle(element).fontFamily); // Imprime la propiedad 'fontFamily'
+console.log(window.getComputedStyle(element).margin); // Imprime una propiedad 'margin'
 ```
 
 Los elementos disponen de la propiedad `className` que permite asignar una clase CSS a un elemento o consultar las clases aplicadas:
@@ -1864,12 +1864,18 @@ console.log(intro.className); // imprime 'fondo'
 Cuando un elemento tiene más de una clase CSS o se quiere añadir más clases y no sobreescribir la clases anteriores, JavaScript incorpora la propiedad `classList` a los elementos del DOM.
 
 ```js
-for (let clase of intro.classList) {
+for (let clase of element.classList) {
   console.log(clase);
 }
 ```
 
 La propiedad `classList` dispone de una serie de métodos para facilitar el trabajo:
+
+- **`add(nombreClase1 [,nombreClaseN])`**
+- **`remove(nombreClase1 [,nombreClaseN])`**
+- **`toggle(nombreClase1 [,forzar])`**
+- **`contains(nombreClase)`**
+- **`replace(nombreViejo, nombreNuevo)`**
 
 ```js
 const div = document.createElement("div");
@@ -1918,6 +1924,194 @@ let libro = document.getElementById("libro");
 console.log(libro.dataset.tipo);
 console.log(libro.dataset.autor);
 ```
+
+### Navegar por el DOM
+
+JavaScript propone una serie de métodos para navegar por el DOM:
+
+- **`Node.childNodes`**: propiedad de sólo lectura que devuelve una colección de nodos. Este método también devuelve texto y comentarios como nodos.
+
+- **`Node.children`**: propiedad de sólo lectura que devuelve una colección viva de nodos hijos. Únicamente devuelve los elementos.
+
+- **`Node.firstChild`**
+
+- **`Node.lastChild`**
+
+- **`Node.nextSibling`**
+
+- **`Node.previousSibling`**
+
+- **`Node.parentNode`**
+
+- **`Node.firstElementChild`**
+
+- **`Node.lastElementChild`**
+
+- **`Node.nextElementSibling`**
+
+- **`Node.previousElementSibling`**
+
+Las propiedades tienen dos versiones. Las que incluyen `Element` sólo incluyen los nodos que son elementos como `<p>`, `<div>`, `<h1>`, etcétera...
+
+```html
+<div id="miDiv" class="miClase">
+  <p>Este es un párrafo dentro del div</p>
+  <ul>
+      <li>Elemento 1</li>
+      <li>Elemento 2</li>
+      <li>Elemento 3</li>
+  </ul>
+</div>
+
+<script>
+  // Obtener un elemento por su ID
+  var miDiv = document.getElementById("miDiv");
+  console.log("Elemento por ID:", miDiv);
+
+  // Obtener elementos por su clase
+  var elementosPorClase = document.getElementsByClassName("miClase");
+  console.log("Elementos por clase:", elementosPorClase);
+
+  // Obtener el primer párrafo dentro del div
+  var primerParrafo = miDiv.querySelector("p");
+  console.log("Primer párrafo:", primerParrafo);
+
+  // Obtener todos los elementos de la lista dentro del div
+  var elementosLista = miDiv.querySelectorAll("ul li");
+  console.log("Elementos de la lista:", elementosLista);
+
+  // Acceder al padre del div
+  var padreDelDiv = miDiv.parentNode;
+  console.log("Padre del div:", padreDelDiv);
+
+  // Acceder al primer hijo del div
+  var primerHijoDelDiv = miDiv.firstChild;
+  console.log("Primer hijo del div:", primerHijoDelDiv);
+
+  // Acceder al siguiente hermano del div
+  var siguienteHermanoDelDiv = miDiv.nextSibling;
+  console.log("Siguiente hermano del div:", siguienteHermanoDelDiv);
+
+  var lista = miDiv.querySelector("ul");
+  console.log(lista.childNodes.length); // imprime '7' ya que incluye el texto
+  console.log(lista.children.length); // imprime '3', sólo cuenta los '<li>'
+
+</script>
+```
+
+### Modificar el DOM
+
+```html
+<div id="miDiv" class="miClase">
+  <p>Este es un párrafo dentro del div</p>
+  <ul>
+      <li>Elemento 1</li>
+      <li>Elemento 2</li>
+      <li>Elemento 3</li>
+  </ul>
+</div>
+
+<script>
+  // Permite crear elementos pero que aún no se ha añadido en el árbol DOM
+  let nuevoDiv = document.createElement("div");
+  
+  // Se puede usar la referencia para acceder a las propiedades
+  nuevoDiv.innerHTML = "<p>Esta es una nueva capa</p>";
+  nuevoDiv.setAttribute("id", "nuevaCapa");
+  
+  // El nuevo 'div' Se añade al final del 'body'
+  document.body.appendChild(nuevoDiv);
+  
+  // Se crea un nodo de tipo 'texto'
+  let nodoTexto = document.createTextNode("Texto");
+  document.body.appendChild(nodoTexto);
+  
+  let ul = document.querySelector("ul");
+  let li = document.createElement("li");
+  li.textContent = "Elemento 4";
+  
+  // Inserta el nuevo 'li' como nodo
+  ul.appendChild(li);
+</script>
+```
+
+### Colección 'viva'
+
+En JavaScript, una "colección viva" (_live collection_) se refiere a un tipo especial de colección de nodos del DOM que se actualiza automáticamente cuando cambia el documento.
+
+Esto significa que si se realizan cambios en el documento después de que la colección se haya creado, la colección se actualizará automáticamente para reflejar esos cambios, sin necesidad de volver a seleccionar los elementos.
+
+Ejemplos comunes de colecciones vivas son aquellas obtenidas mediante métodos como `getElementsByClassName` o `getElementsByTagName`, `attributes`, `classList` o `children`.
+
+Sin embargo, el método `querySelectorAll()` devuelve una **colección estática** por lo que no se actualizan automáticamente si se añaden o eliminan nodos.
+
+```html
+<ul>
+  <li class="item">Elemento 1</li>
+  <li class="item">Elemento 2</li>
+  <li class="item">Elemento 3</li>
+</ul>
+
+<script>
+// Obtener una colección viva de elementos con la clase "item"
+var elementos = document.getElementsByClassName("item");
+
+// Imprimir la longitud de la colección
+console.log("Longitud inicial:", elementos.length);
+
+// Agregar un nuevo elemento a la lista
+var nuevoElemento = document.createElement("li");
+nuevoElemento.textContent = "Elemento 4";
+document.querySelector("ul").appendChild(nuevoElemento);
+
+// La colección se actualiza automáticamente
+console.log("Longitud después de agregar un elemento:", elementos.length);
+</script>  
+```
+
+## Temporizadores
+
+En JavaScript, los temporizadores son funciones que permiten ejecutar código después de un cierto período de tiempo o en intervalos regulares.
+
+Aquí hay un resumen de los temporizadores más comunes en JavaScript:
+
+- **`setTimeout(función, tiempo)`**: ejecuta la función después de un cierto período de tiempo (en milisegundos). Retorna un identificador de temporizador que puede ser utilizado para cancelar la ejecución planificada.
+
+```js
+setTimeout(function() {
+    console.log("¡Hola después de 2000 ms!");
+}, 2000);
+```
+
+- **`clearTimeout(identificador)`**: cancela la ejecución de una función programada con `setTimeout()` antes de que ocurra.
+
+```js
+var timeoutID = setTimeout(function() {
+    console.log("Esta ejecución se cancelará");
+}, 2000);
+
+clearTimeout(timeoutID); // Cancela la ejecución programada
+```
+
+- **`setInterval(función, intervalo)`**: ejecuta la función repetidamente con un intervalo de tiempo entre cada ejecución (en milisegundos). Retorna un identificador de intervalo que puede ser utilizado para detener la ejecución repetida.
+
+```js
+var intervaloID = setInterval(function() {
+    console.log("¡Hola cada 1000 ms!");
+}, 1000);
+```
+
+- **`clearInterval(identificador)`**: detiene la ejecución repetida de una función programada con setInterval.
+
+```js
+var intervaloID = setInterval(function() {
+    console.log("¡Hola cada 1000 ms!");
+}, 1000);
+
+clearInterval(intervaloID); // Detiene la ejecución repetida
+```
+
+Estos temporizadores son útiles para tareas como animaciones, actualizaciones periódicas de contenido, y otras situaciones en las que es necesario controlar el tiempo. Sin embargo, es importante usarlos con precaución para evitar problemas de rendimiento y asegurarse de cancelarlos cuando ya no son necesarios para evitar posibles fugas de memoria.
 
 ## Resumen
 
@@ -2426,6 +2620,7 @@ if (Object.create === undefined){ // esta validación sirve para no sobreescribi
 - <https://www.javascripttutorial.net/>
 - <https://exploringjs.com/es6/>
 - <https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript>
+- <https://goalkicker.com/JavaScriptBook/>
 - <https://jsfiddle.net/>
 
 ## Licencia
