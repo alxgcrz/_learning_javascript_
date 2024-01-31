@@ -775,9 +775,9 @@ x %= 5; // Equivale a x = x % 5;
 x **= 5; // Equivale a x = x ** 5;
 ```
 
-## Control de flujo
+### Control de flujo
 
-### Condicinal
+#### Condicinal
 
 ```js
 // Asignación condicinal "condicion ? valor_si_true : valor_si_false"
@@ -826,7 +826,7 @@ switch (expresion) {
 }
 ```
 
-### Bucles
+#### Bucles
 
 ```js
 // Bucles 'while'
@@ -1540,7 +1540,37 @@ let a = [1, 2, 3, 4, 5, 6, 7, 8];
 console.log(a.obtenerPares()); // imprime '[ 2, 4, 6, 8 ]'
 ```
 
-## Notación JSON
+## Objetos globales predefinidos
+
+[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects)
+
+### Math
+
+Se trata de un objeto global que facilita la ejecución de algunas operaciones matemáticas.
+
+Tiene disponibles algunas propiedades como `Math.E` o `Math.PI` y métodos como `Math.abs(x)` o `Math.random()`.
+
+[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Math)
+
+### Date
+
+Este es otro objeto global que permite trabajar con fechas en JavaScript.
+
+```js
+let hoy = new Date();
+console.log(hoy); // Imprime '2024-01-24T18:39:49.207Z'
+```
+
+El objeto `Date` también tiene algunos métodos estáticos:
+
+```js
+// Devuelve el número de milisegundos transcurridos desde el 1 de Enero de 1970, 00:00:00 UTC
+console.log(Date.now()); // Imprime '1706121708552'
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+### JSON
 
 JSON es el acrónimo de **_JavaScript Objects Notation**__ que se creó en 2001 por parte de Douglas Crockford.
 
@@ -1587,34 +1617,6 @@ JavaScript aporta un objeto global llamado `JSON` que permite manipular datos en
 - **`JSON.parse()`**: analiza una cadena de texto en formato JSON, transformando opcionalmente el valor producido por el análisis al objeto JavaScript. Si no es correcto devuelve una excepción de tipo `SyntaxError`.
 
 [Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/JSON)
-
-## Objetos predefinidos
-
-### Math
-
-Se trata de un objeto global que facilita la ejecución de algunas operaciones matemáticas.
-
-Tiene disponibles algunas propiedades como `Math.E` o `Math.PI` y métodos como `Math.abs(x)` o `Math.random()`.
-
-[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Math)
-
-### Date
-
-Este es otro objeto global que permite trabajar con fechas en JavaScript.
-
-```js
-let hoy = new Date();
-console.log(hoy); // Imprime '2024-01-24T18:39:49.207Z'
-```
-
-El objeto `Date` también tiene algunos métodos estáticos:
-
-```js
-// Devuelve el número de milisegundos transcurridos desde el 1 de Enero de 1970, 00:00:00 UTC
-console.log(Date.now()); // Imprime '1706121708552'
-```
-
-[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
 ## Manipulación del DOM
 
@@ -2113,6 +2115,375 @@ clearInterval(intervaloID); // Detiene la ejecución repetida
 
 Estos temporizadores son útiles para tareas como animaciones, actualizaciones periódicas de contenido, y otras situaciones en las que es necesario controlar el tiempo. Sin embargo, es importante usarlos con precaución para evitar problemas de rendimiento y asegurarse de cancelarlos cuando ya no son necesarios para evitar posibles fugas de memoria.
 
+## Gestión de eventos
+
+Los eventos son el mecanismo fundamental para comunicar la aplicación con el usuario.
+
+Un evento no es más que un suceso, algo que ha ocurrido como resultado de un acto del usuario o por otras razones. Para que se considere realmente un evento, la aplicación tien que ser capaz de detectarlo y tiene que ser capaz de ejecutar el código asociado a dicho evento.
+
+Los eventos se asocian a un elemento del DOM.
+
+La clave de los eventos en JavaScript es su capacidad asíncrona.
+
+[Más información](https://developer.mozilla.org/es/docs/Learn/JavaScript/Building_blocks/Events)
+
+### Mecanismos obsoletos
+
+El primer método para el registro de manejadores de eventos en la Web, utilizaba atributos HTML para manejar eventos (o manejadores de eventos en línea).
+
+Sin embargo no se recomienda su uso ya que es una mala práctica. Mezclar código JavaScript con HTML dificulta la lectura y el mantenimiento del código:
+
+```html
+<!-- Mecanismo en línea -->
+<button onclick="alert('¡Hola, este es un manejador de eventos anticuado!');">
+  Haz click
+</button>
+
+<!-- Otro mecanismo en línea con función en JavaScript -->
+<button onclick="bgChange()">Haz clic</button>
+
+<script>
+function bgChange() {
+  const rndCol = `rgb(${random(255)}, ${random(255)}, ${random(255)})`;
+  document.body.style.backgroundColor = rndCol;
+}
+</script>
+```
+
+Los elementos tienen propiedades que permiten mejorar la legibilidad del código separando el código JavaScript del HTML:
+
+```html
+<p id="parrafo1">Párrafo clickable</p>
+
+<script>
+let parrafo = document.getElementById("parrafo1");
+parrafo.onclick = () => {alert('click')};
+</script>
+```
+
+### Mecanismo recomendado
+
+Sin embargo, el método aconsejable es utilizar el método `addEventListener` que está disponible en todos los elementos.
+
+A este método hay que indicarle el nombre del evento y la función _callback_ a ejecutar.
+
+La ventaja frente a los métodos obsoletos es que se puede asignar más de una función al mismo evento. También es posible eliminar la función.
+
+Esta función se le denomina **manejador de eventos**. Cuando estas funciones se configuran para ejecutarse en respuesta a un evento, se dice que se está **registrando un manejador de eventos**:
+
+```html
+<button>Cambiar el color</button>
+
+<script>
+const btn = document.querySelector("button");
+
+function random(number) {
+  return Math.floor(Math.random() * (number + 1));
+}
+
+btn.addEventListener("click", () => {
+  const rndCol = `rgb(${random(255)}, ${random(255)}, ${random(255)})`;
+  document.body.style.backgroundColor = rndCol;
+});
+</script>
+```
+
+Para eliminar un manejador de eventos, se utiliza la función `removeEventListener()`. Es necesario que la función tenga **nombre** por lo que no podemos eliminar manejadores con funciones anónimas:
+
+```js
+btn.removeEventListener("click", changeBackground);
+```
+
+### Propagación de los eventos
+
+Una cuestión fundamental en la captura de eventos es cómo se propagan los eventos sobre estructuras con contenedores y elementos anidados, como por ejemplo una estructura tal que así:
+
+```html
+<body>
+  <div id="outer">
+    <p>
+      <button>Haz click</button>
+    </p>
+  </div>
+</body>
+```
+
+La propagación de eventos se divide en dos fases:
+
+- **Fase de captura** que va desde el elemento contenedor padre hacia los elementos anidados.
+
+- **Fase de burbuja** que va ascendiendo desde el elemento anidado hacia el contenedor padre.
+
+Por defecto, la función asociada al evento se lanza en la **fase de burbuja**:
+
+```js
+let div = document.querySelector("#outer");
+div.addEventListener("click", () => {console.log("CLICK DIV")});
+
+let button = document.querySelector("button");
+button.addEventListener( "click", () => {console.log("CLICK BUTTON")});
+
+// En consola se imprimirá:
+// 'CLICK BUTTON'
+// 'CLICK DIV'
+```
+
+Para evitar que la propagación "ascienda" de los elementos anidados hasta los elementos contendores, se puede utilizar la función `stopPropagation()` del objeto `Event`:
+
+```js
+let div = document.querySelector("#outer");
+div.addEventListener("click", message);
+
+let button = document.querySelector("button");
+button.addEventListener( "click", message);
+
+function message(event) {
+  event.stopPropagation();
+  console.log(`CLICK ${event.currentTarget.tagName}`);
+}
+
+// En consola solo se imprimirá:
+// 'CLICK BUTTON'
+```
+
+Es posible modificar el comportamiento de la propagación de eventos de forma que los manejadores de eventos se ejecuten en la **fase de captura** añadiendo un tercer parámetro `{capture: true}` a la función `addEventListener`:
+
+```js
+let div = document.querySelector("#outer");
+div.addEventListener("click", message, {capture: true});
+
+let button = document.querySelector("button");
+button.addEventListener( "click", message, {capture: true});
+
+function message(event) {
+  console.log(`CLICK ${event.currentTarget.tagName}`);
+}
+
+// En consola se imprimirá:
+// 'CLICK DIV'
+// CLICK BUTTON'
+```
+
+### Objeto 'Event'
+
+Los gestores de eventos pueden estar atados a varios elementos en el DOM. Cuando un evento ocurre, un objeto de evento es dinámicamente creado y pasado secuencialmente a las "escuchas" (_listeners_) autorizadas para la gestión del evento.
+
+La interfaz `Event` del DOM es entonces accesible por la función de manejo, vía el objeto de evento puesto como el primer (y único) argumento:
+
+```js
+let button = document.querySelector("button");
+button.addEventListener( "click", message);
+
+function message(event) {
+  // objeto 'Event'
+  console.log(`CLICK ${event.currentTarget.tagName}`);
+}
+```
+
+Algunas de las propiedades de este objeto `Event`:
+
+- **`event.bubbles`**: Devuelve un valor que indica si el evento se propaga hacia arriba a través del DOM o no.
+
+- **`event.cancelable`**: Devuelve un valor que indica si el evento se puede cancelar.
+
+- **`event.currentTarget`**: Devuelve una referencia al objetivo actual registrado para el evento.
+
+- **`event.target`**: Devuelve una referencia al objetivo en la cual el evento fue originalmente enviado.
+
+- **`event.type`**: Devuelve el nombre del evento (distingue mayúsculas y minúsculas).
+
+Además de las propiedades, los objetos de evento poseen métodos. Uno de los más importantes es el método sin parámetros `preventDefault()`.
+
+Se utiliza este método para evitar o cancelar el comportamiento por defecto del elemento que recibe el evento.
+
+Algunos de los comportamientos por defecto que aplican los navegadores según el elemento HTML:
+
+- **`<form>`**: se envía los datos del formulario al servidor y recarga la página.
+
+- **`<input type="submit">`** o **`<button type="submit">`**: se envía el formulario
+
+- **`<input type="reset">`** o **`<button type="reset">`**: se restablece los campos del formulario a sus valores iniciales.
+
+- **`<input type="button">`** o **`<button type="button">`**: no tiene una acción predeterminada
+
+- **`<a>`** (como un botón dentro de un formulario): puede redirigir a otra página.
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Event)
+
+#### Tipos de eventos
+
+Existen [multitud de eventos clasificados en MDN](https://developer.mozilla.org/es/docs/Web/Events) como por ejemplo el evento `click` utilizado en los ejemplos:
+
+```js
+let button = document.querySelector("button");
+button.addEventListener( "click", message);
+```
+
+Estos eventos se clasifican en **categorías**, como por ejemplo:
+
+- **[MouseEvent](https://developer.mozilla.org/es/docs/Web/API/MouseEvent)**: eventos como por ejemplo `click`, `dblclick`, `mousenter`, `mouseleave`...
+
+- **[KeyboardEvent](https://developer.mozilla.org/es/docs/Web/API/KeyboardEvent)**: eventos como por ejemplo `keypress`, `keydown`, `keyup`...
+
+## Gestión de excepciones
+
+Las excepciones en JavaScript son generalmente objetos globales de tipo `Error` o alguno de sus subtipos:
+
+- **EvalError**: instancia que representa un error que ocurre con respecto a la función global `eval()`.
+
+- **InternalError**: instancia que representa un error que ocurre cuando se produce un error interno en el motor de JavaScript.
+
+- **RangeError**: instancia que representa un error que ocurre cuando una variable numérica o parámetro está fuera de su rango válido.
+
+- **ReferenceError**: instancia que representa un error que ocurre cuando se quita la referencia a una referencia no válida.
+
+- **SyntaxError**: instancia que representa un error de sintaxis.
+
+- **TypeError**: instancia que representa un error que ocurre cuando una variable o parámetro no es de un tipo válido.
+
+- **URIError**: instancia que representa un error que ocurre cuando `encodeURI()` o `decodeURI()`  pasan parámetros no válidos.
+
+Se puede usar el objeto `Error` como objeto base para errores definidos por el usuario o usar uno de los subtipos. El objeto `Error` tiene las propiedades `name` y `message`:
+
+```js
+try {
+  throw new Error("¡Ups!");
+} catch (e) {
+  console.error(`${e.name}: ${e.message}`);
+}
+```
+
+Para capturar una excepción se utiliza un bloque `try...catch` o `try...catch...finally` según las necesidades. Se puede manejar errores específicos con `instanceof`:
+
+```js
+try {
+  foo.bar();
+} catch (e) {
+  if (e instanceof EvalError) {
+    console.error(`${e.name}: ${e.message}`);
+  } else if (e instanceof RangeError) {
+    console.error(`${e.name}: ${e.message}`);
+  }
+  // ... code
+}
+
+try {
+  foo.bar();
+} catch (e) {
+  console.error(`${e.name}: ${e.message}`);
+} finally {
+  // ... code
+}
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Error)
+
+### Modo estricto
+
+En JavaScript, `'use strict'` es una declaración que se utiliza para activar el modo estricto en un script o función. Introducido a partir del estándar **ES6**, este modo introduce un conjunto más riguroso de reglas y restricciones en el código, ayudando a detectar y prevenir errores comunes, así como a mejorar la calidad y la consistencia del código:
+
+- **Prevención de errores**: este modo ayuda a prevenir errores comunes y silenciosos al lanzar excepciones para prácticas consideradas ambiguas o propensas a errores.
+
+- **Eliminación de ambigüedades**: en el modo estricto, ciertas acciones que eran permitidas en el modo no estricto ahora lanzarán errores, eliminando ambigüedades y mejorando la claridad del código.
+
+- **Mejoras en la seguridad**: algunas acciones que podrían ser peligrosas o inseguras se vuelven errores en el modo estricto, mejorando así la seguridad del código.
+
+- **Mejoras en el rendimiento**: algunas optimizaciones de rendimiento están habilitadas en el modo estricto, lo que puede llevar a un código más eficiente en términos de ejecución.
+
+Mientras que sin el modo estricto determinados problemas únicamente se muestran con un **warning**, cuando se declara el modo estricto se muestra una **excepción**.
+
+Este modo se puede activar a nivel de **script o fichero** y a nivel de **función**:
+
+```js
+'use strict';
+
+// En el modo estricto se muestra una excepción :
+// 'Uncaught ReferenceError: assignment to undeclared variable x'
+x=9;  // 
+console.log(x);
+
+// Declaración estricta dentro de una función
+function f(param) {
+  'use strict';
+  // ....
+}
+```
+
+Hay que tener en cuenta que si se utilizan módulos ECMAScript 6 (ES6), el modo estricto se activa **automáticamente** en cada módulo.
+
+## Módulos
+
+Con la introducción de ECMAScript 2015 (también conocido como ES6), JavaScript incorporó **soporte nativo para módulos**, proporcionando una forma más organizada y modular de estructurar y gestionar el código en aplicaciones web.
+
+Los módulos en JavaScript permiten encapsular piezas específicas de código en archivos separados, lo que facilita la organización y mantenimiento del código fuente. Al utilizar las palabras clave `import` y `export`, los desarrolladores pueden definir qué **funciones**, **variables** o **clases** están disponibles para ser utilizadas en otros módulos.
+
+Un archivo de módulo puede exportar múltiples valores y otro módulo puede importar solo aquellos que necesita, lo que reduce la complejidad y las dependencias innecesarias. Además, los módulos tienen su propio ámbito (_scope_), evitando la contaminación del espacio global y permitiendo una mayor encapsulación.
+
+La sintaxis básica de los módulos en JavaScript ES6 se ve así:
+
+```js
+// modulo.js
+export const miVariable = 42;
+
+export function miFuncion() {
+  console.log("Hola desde miFuncion");
+}
+```
+
+Una forma alternativa de exportar los elementos es usar una sola declaración de exportación al final del archivo:
+
+```js
+// modulo.js
+const miVariable = 42;
+
+function miFuncion() {
+  console.log("Hola desde miFuncion");
+}
+
+// Export
+export {miVariable, miFuncion};
+```
+
+Se utiliza la declaración `import` para importar los elementos de un módulo:
+
+```js
+// main.js
+import { miVariable, miFuncion } from './modulo.js';
+
+console.log(miVariable); // Imprime 42
+miFuncion(); // Imprime "Hola desde miFuncion"
+```
+
+Los elementos importados se pueden renombrar, ya sea para facilitar la legibilidad o para evitar problemas de nombres mediante la palabra clave `as`:
+
+```js
+// main.js
+import { miVariable as myVar, miFuncion as myFunction } from './modulo.js';
+```
+
+También se pueden importar todos los elementos de un módulo, pero en ese caso se tiene que asignar un nombre que se utilizará como **espacio de nombres**:
+
+```js
+// main.js
+import  * as myModule from './modulo.js';
+
+console.log(myModule.miVariable); // Imprime 42
+myModule.miFuncion(); // Imprime "Hola desde miFuncion"
+```
+
+Si se importa el módulo en HTML, se tiene que indicar en la etiqueta `<script>`:
+
+```html
+<script type="module">
+import * as myModule from './js/modulo.mjs';
+
+console.log(myModule.miVariable); // Imprime 42
+myModule.miFuncion(); // Imprime "Hola desde miFuncion"
+</script>  
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Modules)
+
 ## Resumen
 
 ```javascript
@@ -2608,7 +2979,6 @@ if (Object.create === undefined){ // esta validación sirve para no sobreescribi
 - <https://github.com/ryanmcdermott/clean-code-javascript>
 - <https://lenguajejs.com>
 - <https://developer.mozilla.org/es/docs/Web/JavaScript>
-- <https://developer.mozilla.org/es/docs/Web/JavaScript/Language_overview>
 - <https://github.com/CodeKommissar/JavaScript-Elocuente/blob/master/00_intro.md>
 - <https://overapi.com/javascript>
 - <https://htmlcheatsheet.com/js/>
