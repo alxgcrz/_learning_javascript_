@@ -1261,7 +1261,16 @@ diHola()(); // Usamos paréntesis dobles para invocar también la función retor
 
 ### Funciones flecha
 
-Esta forma de declarar una función sólo sirve con funciones anónimas.
+Esta forma de declarar una función sólo sirve con funciones anónimas y consiste en que no aparece la palabra `function` y que una flecha `=>` separa los parámetros del cuerpo. Esta forma de escribir funciones aparece en JavaScript a partir de ECMAScript 6.
+
+Las funciones flechas tienen algunas ventajas a la hora de simplificar código bastante interesantes:
+
+- Si el cuerpo de la función sólo tiene una línea, podemos omitir las llaves (`{}`).
+- Además, en ese caso, automáticamente se hace un `return` de esa única línea, por lo que se puede omitir.
+- En el caso de que la función no tenga parámetros, se indica como: `() =>`.
+- En el caso de que la función tenga un solo parámetro, se puede indicar simplemente el nombre del mismo: `e =>`.
+- En el caso de que la función tenga 2 ó más parámetros, se indican entre paréntesis: `(a, b) =>`.
+- Si queremos devolver un objeto, que coincide con la sintaxis de las llaves, se puede englobar con paréntesis: (`{capture: true}`).
 
 ```js
 // Función anónima
@@ -1269,7 +1278,7 @@ function(x) {
   return 3*x;
 }
 
-// Notación en forma de función flecha
+// Equivalente con notación en forma de función flecha
 const triple = x => 3*x;
 ```
 
@@ -1281,7 +1290,7 @@ function(x, y) {
   return x + y;
 }
 
-// Notación en forma de función flecha
+// Equivalente con notación en forma de función flecha
 const suma = (x, y) => x + y;
 ```
 
@@ -1293,7 +1302,7 @@ function() {
   console.log("Hello World!!);
 }
 
-// Notación en forma de función flecha
+// Equivalente con notación en forma de función flecha
 const saludo = () => {console.log("Hello World!!");}
 ```
 
@@ -2483,6 +2492,273 @@ myModule.miFuncion(); // Imprime "Hola desde miFuncion"
 ```
 
 [Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Modules)
+
+## Programación asíncrona
+
+La **asincronía** en JavaScript es un concepto fundamental que se refiere a la capacidad del lenguaje para realizar operaciones sin bloquear la ejecución del código. En lugar de esperar que una tarea se complete antes de pasar a la siguiente, JavaScript permite la ejecución de múltiples operaciones de manera concurrente mediante el uso de **callbacks**, **promesas** y **_async/await_**.
+
+Por tanto JavaScript se considera un **lenguaje no bloqueante o asíncrono**.
+
+Esta característica es esencial para manejar operaciones que pueden llevar tiempo, como la lectura de archivos, solicitudes de red o procesos intensivos en recursos. La asincronía permite que el programa continúe ejecutándose mientras espera la finalización de otras tareas, mejorando así la eficiencia y la capacidad de respuesta de las aplicaciones.
+
+El manejo adecuado de la asincronía es crucial para evitar bloqueos en la interfaz de usuario y mejorar la experiencia del usuario en aplicaciones web, donde las operaciones asíncronas son comunes.
+
+En lenguajes síncronos la única manera de conseguir asíncronía es crear varios hilos independientes en los que cada uno realiza una tarea. Así funciona por ejemplo Java. Sin embargo, JavaScript es un lenguaje de un sólo hilo, no se pueden programar dos hilos a la vez. JavaScript es asíncrono por naturaleza, por lo que no es necesario trabajar con múltiples hilos.
+
+### Callbacks
+
+Probablemente, la forma más **clásica** de gestionar la asincronía en Javascript. Es una práctica poco recomendable ya que cuando las funciones _callback_ se van anidando dificulta la legibilidad del código y es más propenso a errores. Esto se denomina **_callback hell_**:
+
+```js
+// Ejemplo de callback hell
+function iniciarProceso() {
+  realizarPrimeraAccion(function(resultado1) {
+    console.log(resultado1);
+
+    realizarSegundaAccion(function(resultado2) {
+      console.log(resultado2);
+
+      realizarTerceraAccion(function(resultado3) {
+        console.log(resultado3);
+
+        // Y así sucesivamente...
+      });
+    });
+  });
+}
+
+function realizarPrimeraAccion(callback) {
+  setTimeout(function() {
+    callback("Primera acción completada");
+  }, 1000);
+}
+
+function realizarSegundaAccion(callback) {
+  setTimeout(function() {
+    callback("Segunda acción completada");
+  }, 1000);
+}
+
+function realizarTerceraAccion(callback) {
+  setTimeout(function() {
+    callback("Tercera acción completada");
+  }, 1000);
+}
+
+// Llamamos a la función que inicia el proceso
+iniciarProceso();
+```
+
+De todas formas, las funciones _callback_ no son más que un tipo de funciones que se pasan por parámetro a otras funciones. Además, los parámetros de dichas funciones toman un valor especial en el contexto del interior de la función.
+
+### Promesas
+
+La solución al problema del _callback hell_ es una estructura que permite controlar de forma más organizada las tareas asíncronas. Esta nueva estructura es lo que se conoce como **promesa**.
+
+La norma ES2015 incorporó las promesas al estándar de JavaScript.
+
+Las **promesas** en JavaScript se representan a través de un objeto de tipo [`Promise`](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+
+Cada promesa puede estar en un estado concreto: **pendiente (_pending_)**, **aceptada (_resolved o fullfilled_)** o **rechazada (_rejected_)**.
+
+Estos objetos de tipo `Promise` son los que hacen la labor de relacionar la tarea asíncrona con las acciones a tomar en caso de éxito o error. Para ello proporcionan varios métodos:
+
+- **`.then(resolve)`**: ejecuta la función _callback_ `resolve` con un parámetro cuando la promesa se cumple.
+
+- **`.catch(reject)`**: ejecuta la función _callback_ `reject` con un parámetro cuando la promesa se rechaza.
+
+- **`.then(resolve, reject)`**: método equivalente a las dos anteriores en el mismo `.then()`.
+
+- **`.finally(end)`**: ejecuta la función _callback_ `end` sin parámetros tanto si se cumple como si se rechaza.
+
+La forma general de consumir una promesa es utilizando el `.then()` con un sólo parámetro, puesto que muchas veces lo único que nos interesa es realizar una acción cuando la promesa se cumpla:
+
+```js
+fetch("https://google.es").then(function(response) {
+  /* Código a realizar cuando se cumpla la promesa */
+});
+```
+
+El método `.catch()` permite gestionar el rechazo o error en la promesa:
+
+```js
+fetch("https://google.es")
+  .then(function(response) {
+    /* Código a realizar cuando se cumpla la promesa */
+  })
+  .catch(function(error) {
+    /* Código a realizar cuando se rechaza la promesa */
+  });
+```
+
+Se pueden encadenar varios `.then()` si se siguen generando promesas y se devuelven con un `return`. Cada una de ellas se ejecutada en el orden en el que son insertadas pero nunca antes de que la anterior termine con **éxito**, ya que en caso contrario se ejecuta el `.catch()`:
+
+```js
+fetch("https://google.es")
+  .then(response => {
+    return response.text(); // Devuelve una promesa
+  })
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => { /* Código a realizar cuando se rechaza la promesa */ })
+```
+
+De hecho, usando **funciones flecha** se puede mejorar aún más la legibilidad del código, recordando que cuando sólo tenemos una sentencia en el cuerpo de la función flecha hay un `return` implícito:
+
+```js
+fetch("https://google.es")
+  .then(response => response.text())
+  .then(data => console.log(data))
+  .finally(() => console.log("Terminado"))
+  .catch(error => console.error(data));
+```
+
+Se puede añadir un método `.finally()` para añadir una función _callback_ que se ejecutará tanto si la promesa **se cumple o se rechaza**.
+
+Una `Promise`puede ser creada desde cero usando su constructor:
+
+```js
+// Ejemplo de creación de una Promise
+function ejecutarOperacionAsincrona() {
+  return new Promise((resolve, reject) => {
+    // Simulamos una operación asincrónica, por ejemplo, una solicitud a una API
+    setTimeout(() => {
+      const exito = true; // Cambia a false para simular un error
+
+      if (exito) {
+        resolve("La operación fue exitosa");
+      } else {
+        reject("Hubo un error en la operación");
+      }
+    }, 2000); // Simulamos un retardo de 2 segundos
+  });
+}
+
+// Utilizamos la Promise
+ejecutarOperacionAsincrona()
+  .then(resultado => {
+    console.log(resultado);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+```
+
+En este ejemplo, `ejecutarOperacionAsincrona` es una función que devuelve una `Promise`. Dentro del constructor de `Promise`, hay una función que toma dos parámetros: `resolve` y `reject`. Si la operación es exitosa, sed llama a `resolve` con el resultado deseado mientras que si hay un error, se llama a `reject` con un mensaje de error.
+
+El objeto `Promise` aporta el método estático `Promise.resolve` que crea una nueva promesa y enviando el objeto que se envíe como parámetro:
+
+```js
+let promesa = Promise.resolve("Todo OK");
+promesa.then(respuesta => console.log(respuesta)); // imprime 'Todo OK'
+```
+
+El método estático contrario es `Promise.rejected`:
+
+```js
+let promesa = Promise.reject(Error("Todo KO"));
+
+promesa
+  .then(respuesta => console.log(respuesta))
+  .catch(error => console.log(error.message)); // imprime 'Todo KO'
+```
+
+Por último, `Promise.all` es útil cuando hay varias promesas y hay que esperar a que todas se resuelvan antes de realizar alguna acción. Es una forma de sincronizar acciones asíncronas:
+
+```js
+// Ejemplo de uso de Promise.all
+function obtenerDatosDeServicios() {
+  // Simulamos dos solicitudes a servicios diferentes
+  const servicio1 = obtenerDatosDeServicio1();
+  const servicio2 = obtenerDatosDeServicio2();
+
+  // Utilizamos Promise.all para esperar a que ambas promesas se resuelvan
+  return Promise.all([servicio1, servicio2])
+    .then(resultados => {
+      // resultados es un array con los resultados de ambas promesas
+      const resultadoServicio1 = resultados[0];
+      const resultadoServicio2 = resultados[1];
+
+      console.log("Datos del Servicio 1:", resultadoServicio1);
+      console.log("Datos del Servicio 2:", resultadoServicio2);
+
+      return "Todas las operaciones fueron exitosas";
+    })
+    .catch(error => {
+      // Si alguna de las promesas falla, se maneja aquí
+      console.error("Hubo un error en al menos una operación:", error);
+    });
+}
+
+// Funciones simuladas que devuelven promesas
+function obtenerDatosDeServicio1() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve("Datos del Servicio 1");
+    }, 1500);
+  });
+}
+
+function obtenerDatosDeServicio2() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve("Datos del Servicio 2");
+    }, 1000);
+  });
+}
+
+// Llamamos a la función que utiliza 'Promise.all'
+obtenerDatosDeServicios()
+  .then(resultado => {
+    console.log(resultado);
+  });
+```
+
+Es importante resaltar que, si alguna promesa se rechazara o provocara un error, instantáneamente se generaría el rechazo sin esperar al resto de promesas.
+
+[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Using_promises)
+
+### Async/await
+
+`async/await` es una característica introducida en ECMAScript 2017 (ES8) que simplifica y mejora la legibilidad del código asíncrono en JavaScript. Esta combinación de palabras clave proporciona una forma más concisa y fácil de trabajar con **Promesas**, haciéndolas parecer más similares a código síncrono.
+
+- **`async`**: se utiliza para declarar una función como asíncrona. Una función asíncrona siempre devuelve una `Promise`, y cualquier valor devuelto por la función es automáticamente envuelto en una `Promise` resuelta.
+
+- **`await`**: se utiliza dentro de funciones declaradas con `async`. Permite pausar la ejecución de la función hasta que la `Promise` dada se resuelva, y luego reanudar la ejecución con el resultado de la `Promise`.
+
+```js
+// Ejemplo de 'async/await'
+function obtenerDatosUsuario(id) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      // Simulamos obtener datos de un servicio
+      const datos = {
+        id: id,
+        nombre: "Usuario Ejemplo",
+        correo: "usuario@example.com"
+      };
+      resolve(datos);
+    }, 1000);
+  });
+}
+
+async function mostrarDatosUsuario() {
+  try {
+    // Esperamos a que se resuelva la 'Promise' antes de continuar
+    const datosUsuario = await obtenerDatosUsuario(123);
+
+    // Una vez que la 'Promise' se resuelve, continuamos con la ejecución
+    console.log("Datos del usuario:", datosUsuario);
+  } catch (error) {
+    // Capturamos cualquier error que ocurra durante la ejecución de la 'Promise'
+    console.error("Error al obtener datos del usuario:", error);
+  }
+}
+
+// Llamamos a la función que utiliza 'async/await'
+mostrarDatosUsuario();
+```
 
 ## Resumen
 
