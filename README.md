@@ -2760,6 +2760,411 @@ async function mostrarDatosUsuario() {
 mostrarDatosUsuario();
 ```
 
+## Comunicación cliente/servidor
+
+Un navegador, durante la carga de una página, suele realizar múltiples peticiones HTTP a un servidor para solicitar los archivos que necesita renderizar en la página, como la hoja de estilos CSS, scripts JS, imágenes, etcétera...
+
+Por lo tanto, cuando cargamos una página (primera petición), en realidad estamos realizando múltiples peticiones posteriormente.
+
+Una petición HTTP es como suele denominarse a la acción por parte del navegador de solicitar a un servidor web un documento o archivo, almacenarlo en un caché temporal de archivos del navegador y, finalmente, mostrarlo en la página actual que lo ha solicitado.
+
+### Políticas CORS
+
+**CORS _(Cross-Origin Resource Sharing)_** es un conjunto de políticas de seguridad implementadas en navegadores web para gestionar solicitudes de recursos entre dominios. Estas restricciones son cruciales para prevenir solicitudes no autorizadas desde scripts en un dominio hacia recursos en otro dominio, mitigando posibles riesgos de seguridad.
+
+Cuando se realiza una solicitud desde un dominio A a un dominio B a través de JavaScript en el navegador, CORS impone restricciones.
+
+El servidor en el dominio B debe incluir encabezados CORS específicos en sus respuestas para indicar qué dominios (_origins_) tienen permiso para acceder a sus recursos.
+
+El encabezado `Access-Control-Allow-Origin` indica qué dominios tienen permiso para acceder a los recursos. Si el dominio de origen no está permitido, se bloquea la solicitud.
+
+Por otra parte el encabezado `Access-Control-Allow-Methods` especifica los métodos HTTP permitidos para la solicitud (GET, POST, etc.).
+
+CORS es esencial para prevenir ataques de solicitudes entre sitios (CSRF) y garantizar que las interacciones entre dominios sean seguras y autorizadas.
+
+[Más información](https://developer.mozilla.org/es/docs/Web/HTTP/CORS)
+
+### AJAX
+
+**_Asynchronous JavaScript and XML_** es el acrónimo que se esconde bajo el término de AJAX. Es una técnica de desarrollo web que permite la comunicación asincrónica entre el cliente y el servidor, sin necesidad de recargar la página completa.
+
+El hecho de que haga referencia a XML es porque cuando se ideó esta tecnología, XML era el formato documental predominante y los datos se enviaban en este formato. Actualmente el formato predominante es **JSON**, aunque por razones fonéticas evidentes se sigue manteniendo el término AJAX en lugar del horrible correspondiente "AJAJ".
+
+AJAX ha sido un pilar en el desarrollo web, permitiendo la actualización dinámica de contenido sin recargar por completo las páginas. Sin embargo, con la evolución del lenguaje y las tecnologías web, la API `fetch` ha surgido como una alternativa más moderna y flexible para realizar solicitudes asíncronas en JavaScript.
+
+El método tradicional de realizar solicitudes asíncronas implicaba el uso del objeto `XMLHttpRequest`. Este objeto proporcionaba una interfaz para realizar solicitudes HTTP y manejar las respuestas de manera asíncrona. Aunque efectivo, su sintaxis y manejo de eventos podían ser verbosos:
+
+```js
+var xhttp = new XMLHttpRequest();
+xhttp.open("GET", "ejemplo.txt", true);
+xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    // Manejar la respuesta del servidor
+    console.log(this.responseText);
+  }
+};
+xhttp.send();
+```
+
+La API `fetch` ofrece una sintaxis más limpia y una interfaz de promesas, simplificando el código y haciéndolo más legible y fácil de mantener. Además, `fetch` está diseñado para trabajar bien con las características modernas de JavaScript, como las promesas:
+
+```js
+fetch("ejemplo.txt")
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Error en la solicitud HTTP, código " + response.status);
+    }
+    return response.text();
+  })
+  .then(data => {
+    // Manejar la respuesta del servidor
+    console.log(data);
+  })
+  .catch(error => {
+    console.error("Error en la solicitud: ", error);
+  });
+```
+
+- [Más información](https://developer.mozilla.org/es/docs/Web/API/Fetch_API)
+
+- [Especificaciones de Fetch](https://fetch.spec.whatwg.org/)
+
+#### Peticiones con `fetch`
+
+La API `fetch` proporciona un método global que se llama `fetch(url)`. Este método toma un argumento obligatorio, la ruta de acceso al recurso que desea recuperar.
+
+El resultado es una `Promise` que se considera resuelta cuando se reciben resultados sin error del destino:
+
+```js
+// URL de la API de ejemplo
+const apiUrl = 'https://jsonplaceholder.typicode.com/todos/1';
+
+// Utilizando fetch para realizar una solicitud GET
+fetch(apiUrl)
+  .then(response => {
+    // Verificar si la solicitud fue exitosa (código de estado 200-299)
+    if (!response.ok) {
+      throw new Error(`Error de red - Código: ${response.status}`);
+    }
+    // Convertir la respuesta a formato JSON
+    return response.json();
+  })
+  .then(data => {
+    // Manejar los datos obtenidos de la respuesta
+    console.log('Datos recibidos:', data);
+  })
+  .catch(error => {
+    // Capturar y manejar cualquier error durante el proceso
+    console.error('Error durante la solicitud:', error.message);
+  });
+```
+
+#### Manipular el objeto `Response`
+
+Una vez que el objeto `Response` es recuperado, dispone de varias propiedades con información de la respuesta recibida:
+
+- **headers**: obtiene un objeto que contiene las cabeceras http del paquete de respuesta.
+
+- **body**: cuerpo de la respuesta http.
+
+- **status**: devuelve el código de respuesta de la petición http, que se corresponden a los estándares http (100, 200, 300, 400, 500, etcétera...)
+
+- **statusText**: devuelve un texto descriptivo del código de respuesta
+
+- **ok**: con valor **true** indica que la petición se resolvió sin problemas, es decir, el código de respuesta está entre 200-299.
+
+- **redirected**: con valor **true** indica que la respuesta es el resultado de una redirección.
+
+- **url**: devuelve la URL de la que procede la respuesta.
+
+- **type**: indica el tipo de respuesta de la petición cuyos valores pueden ser _basic_, _cors_, _error_ o _opaque_.
+
+Además, el objeto de la respuesta tiene varios métodos:
+
+- **redirect(url)**: método que redirige la respuesta a otro URL.
+
+- **clone()**: clona la respuesta en otro objeto.
+
+- **error()**: clona la respuesta generando un error de red.
+
+- **text()**: obtiene un flujo de texto de la respuesta.
+
+- **json()**: obtiene un flujo de texto de la respuesta pero en formato JSON.
+
+- **blob()**: obtiene un objeto binario de la respuesta, como por ejemplo ficheros o imágenes.
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Response)
+
+#### Personalizar el objeto `Request`
+
+Cuando se realizan peticiones mediante el método `fetch()`, además de la URL, podemos pasar como parámetro un objeto de tipo `Request`.
+
+Este objeto permite modificar el paquete http que se envía con la petición para que se ajuste a las necesidades del cliente.
+
+Algunas de las propiedades disponibles en el objeto `Request`:
+
+- **url**: propiedad obligatoria que contiene la URL destino de la petición
+
+- **method**: metodo http que usará la petición como por ejemplo **GET**, **POST**, **PUT**, **DELETE**, etcétera... Por defecto se utiliza **GET**.
+
+- **headers**: permite indicar un objeto de tipo `Headers` que permite modificar la cabecera de la petición.
+
+- **mode**: indica si se usa CORS en la petición.
+
+- **cache**: indica el modo de caché de la respuesta.
+
+- **redirect**: indica cómo se deben procesar las respuestas en caso de que procedan de redirecciones.
+
+- **credentials**: permite especificar si se admiten cookies en la petición.
+
+- **integrity**: almacena una cadena de integridad creada con un algoritmo hash para validar la integridad de la petición.
+
+```js
+// URL de la API ficticia
+const apiUrl = 'https://api.example.com/data';
+
+// Opciones para la solicitud
+const requestOptions = {
+  method: 'GET',
+  headers: new Headers({
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Token de autorización si es necesario
+    // Puedes agregar más encabezados según sea necesario
+  }),
+  // Agregar otras opciones según sea necesario
+};
+
+// Crear un objeto Request con la URL y las opciones
+const request = new Request(apiUrl, requestOptions);
+
+// Realizar la solicitud utilizando fetch()
+fetch(request)
+  .then(response => {
+    // Verificar si la respuesta es exitosa (código de estado 200-299)
+    if (!response.ok) {
+      throw new Error(`Error en la solicitud: ${response.statusText}`);
+    }
+    // Parsear la respuesta JSON
+    return response.json();
+  })
+  .then(data => {
+    // Hacer algo con los datos recibidos
+    console.log('Datos recibidos:', data);
+  })
+  .catch(error => {
+    console.error('Error en la solicitud:', error);
+  });
+```
+
+[Más información](https://developer.mozilla.org/es/docs/Web/API/Request)
+
+#### Uso de `async/await`con `fetch()`
+
+Puesto que la API `fetch` es compatible con las **promesas**, es posible manejarla mediante la notación `async/await`:
+
+```js
+// Función asincrónica para realizar la solicitud
+async function fetchData() {
+  // URL de la API ficticia
+  const apiUrl = 'https://api.example.com/data';
+
+  try {
+    // Realizar la solicitud utilizando fetch() con await
+    const response = await fetch(apiUrl);
+
+    // Verificar si la respuesta es exitosa (código de estado 200-299)
+    if (!response.ok) {
+      throw new Error(`Error en la solicitud: ${response.statusText}`);
+    }
+
+    // Parsear la respuesta JSON con await
+    const data = await response.json();
+
+    // Hacer algo con los datos recibidos
+    console.log('Datos recibidos:', data);
+  } catch (error) {
+    // Capturar y manejar cualquier error que pueda ocurrir durante la solicitud
+    console.error('Error en la solicitud:', error.message);
+  }
+}
+
+// Llamar a la función para iniciar la solicitud
+fetchData();
+```
+
+### Envío de datos con la petición
+
+En muchas ocasiones, los servidores de Internet que otorgan servicios, requieren o permiten enviar datos para determinar de una forma más ajustada los datos que debe devolver.
+
+De forma clásica esos datos son pares nombre/valor pero actualmente se admite enviar datos incluso en formato de texto JSON. Por tanto hay que conocer la API del servicio final para saber qué método usar, cómo enviar los datos y cómo debermos recibirlos.
+
+Actualmente los comandos http se asocian a verbos que requieren un tipo concreto de acción:
+
+- **GET** se asocia a una petición de datos.
+
+- **POST** se asocia a un envío de datos a un servidor.
+
+- **PUT** se asocia a una modificación de datos.
+
+- **DELETE** se asocia a un borrado de datos.
+
+- **PATCH** se asocia a una modificación de datos parcial.
+
+- **HEAD** se asocia a una petición de cabecera.
+
+#### Envío de datos usando `GET`
+
+Cuando se realiza una solicitud HTTP con el método **GET**, los datos se envían en la URL como parámetros de consulta (_query parameters_). Estos parámetros son pares clave-valor que se concatenan a la URL después del signo de interrogación ('?') y se separan entre sí por el símbolo de ampersand ('&'):
+
+```arduino
+https://api.example.com/data?param1=valor1&param2=valor2
+```
+
+Es importante señalar que como los parámetros de consulta se envían directamente en la URL, son visibles en la barra de direcciones del navegador y pueden quedar registrados en los registros del servidor.
+
+#### Envío de datos usando `POST`
+
+En este caso los datos no se envían en la URL sino que se envían en el cuerpo del propio paquete http.
+
+En el caso clásico los datos proceden de datos de un formulario e incluso aunque no procedan, se debe marcar el paquete para indicar que los datos se envían al estilo de los formularios. Esto es, indicar el `Content-Type': 'application/x-www-form-urlencoded'`.
+
+Esta forma usa un formato similar a **GET**. En las peticiones AJAX se debe asociar los valores que se envían a la propiedad `body`:
+
+```js
+// URL de la API ficticia
+const apiUrl = 'https://api.example.com/data';
+
+// Datos a enviar en el cuerpo de la solicitud en formato x-www-form-urlencoded
+const formData = new URLSearchParams();
+formData.append('param1', 'valor1');
+formData.append('param2', 'valor2');
+
+// Opciones para la solicitud
+const requestOptions = {
+  method: 'POST',
+  headers: new Headers({
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Authorization': 'Bearer YOUR_ACCESS_TOKEN' // Token de autorización si es necesario
+    // Puedes agregar más encabezados según sea necesario
+  }),
+  // Convertir los datos a formato x-www-form-urlencoded y enviar en el cuerpo
+  body: formData.toString() 
+  // Agregar otras opciones según sea necesario
+};
+
+// Realizar la solicitud utilizando fetch()
+fetch(apiUrl, requestOptions)
+  .then(response => {
+    // Verificar si la respuesta es exitosa (código de estado 200-299)
+    if (!response.ok) {
+      throw new Error(`Error en la solicitud: ${response.statusText}`);
+    }
+    // Parsear la respuesta JSON
+    return response.json();
+  })
+  .then(data => {
+    // Hacer algo con los datos recibidos
+    console.log('Datos recibidos:', data);
+  })
+  .catch(error => {
+    console.error('Error en la solicitud:', error);
+  });
+```
+
+Hay otra forma de enviar datos de formulario que es el que se asocia al tipo MIME: `application/multipart/form-data`. Es un estilo pensado para enviar datos de gran tamaño o de tipo binario. Si hay que enviar un archivo, este sería el formato apropiado:
+
+```js
+// URL de la API ficticia
+const apiUrl = 'https://api.example.com/upload';
+
+// Crear un formulario HTML
+const formData = new FormData();
+formData.append('param1', 'valor1');
+formData.append('param2', 'valor2');
+
+// Puedes agregar archivos al formulario, si es necesario
+// formData.append('file', fileInput.files[0]);
+
+// Opciones para la solicitud
+const requestOptions = {
+  method: 'POST',
+  headers: new Headers({
+    'Authorization': 'Bearer YOUR_ACCESS_TOKEN' // Token de autorización si es necesario
+    // No es necesario establecer Content-Type aquí, ya que FormData lo manejará automáticamente
+    // Puedes agregar más encabezados según sea necesario
+  }),
+  body: formData
+  // Agregar otras opciones según sea necesario
+};
+
+// Realizar la solicitud utilizando fetch()
+fetch(apiUrl, requestOptions)
+  .then(response => {
+    // Verificar si la respuesta es exitosa (código de estado 200-299)
+    if (!response.ok) {
+      throw new Error(`Error en la solicitud: ${response.statusText}`);
+    }
+    // Parsear la respuesta JSON
+    return response.json();
+  })
+  .then(data => {
+    // Hacer algo con los datos recibidos
+    console.log('Datos recibidos:', data);
+  })
+  .catch(error => {
+    console.error('Error en la solicitud:', error);
+  });
+```
+
+`FormData` se utiliza para construir un objeto que contiene pares clave-valor para cada campo del formulario, incluidos los campos de archivo si es necesario. `fetch()` manejará automáticamente el encabezado `Content-Type` para el tipo de contenido `multipart/form-data`.
+
+#### Envío de datos JSON
+
+No siempre el servicio destino de la petición usa los datos en el formato clásico. Hay servicios que aceptan los datos en formato JSON.
+
+Para esas situaciones, se preparan los datos en un objeto y después se convierten a formato JSON con el método `JSON.stringfy(data)`:
+
+```js
+// URL de la API ficticia
+const apiUrl = 'https://api.example.com/data';
+
+// Datos a enviar en el cuerpo de la solicitud en formato JSON
+const jsonData = {
+  param1: 'valor1',
+  param2: 'valor2'
+};
+
+// Opciones para la solicitud
+const requestOptions = {
+  method: 'POST',
+  headers: new Headers({
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_ACCESS_TOKEN' // Token de autorización si es necesario
+    // Puedes agregar más encabezados según sea necesario
+  }),
+  body: JSON.stringify(jsonData) // Convertir los datos a formato JSON y enviar en el cuerpo
+  // Agregar otras opciones según sea necesario
+};
+
+// Realizar la solicitud utilizando fetch()
+fetch(apiUrl, requestOptions)
+  .then(response => {
+    // Verificar si la respuesta es exitosa (código de estado 200-299)
+    if (!response.ok) {
+      throw new Error(`Error en la solicitud: ${response.statusText}`);
+    }
+    // Parsear la respuesta JSON
+    return response.json();
+  })
+  .then(data => {
+    // Hacer algo con los datos recibidos
+    console.log('Datos recibidos:', data);
+  })
+  .catch(error => {
+    console.error('Error en la solicitud:', error);
+  });
+```
+
 ## Resumen
 
 ```javascript
