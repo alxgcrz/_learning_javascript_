@@ -238,9 +238,9 @@ JavaScript es un lenguaje débilmente tipado. Esto quiere decir que no se indica
 
 Una variable es un espacio de memoria donde se almacena temporalmente un dato para ser utilizado posteriormente en el código. Los nombres de las variables, llamados **identificadores**, se ajustan a ciertas reglas.
 
-Un identificador de JavaScript debe comenzar con una letra, un guión bajo (\_) o un signo de dólar (`$`). Los siguientes caracteres, además de lo indicado anterioremente, pueden incluir dígitos (0-9). La única restricción es que no puede **empezar por un número**.
+Un identificador de JavaScript debe comenzar con una letra (minúscula o mayúscula), un guión bajo (\_) o un signo de dólar (`$`). Los siguientes caracteres, además de lo indicado anterioremente, pueden incluir dígitos (0-9). La única restricción es que no puede **empezar por un número u otros símbolos**.
 
-Dado que JavaScript distingue entre mayúsculas y minúsculas, las letras incluyen los caracteres "A" a "Z" (mayúsculas), así como "a" a "z" (minúsculas).
+Dado que JavaScript distingue entre mayúsculas y minúsculas (es **_"case-sensitive"_**), las letras incluyen los caracteres "A" a "Z" (mayúsculas), así como "a" a "z" (minúsculas).
 
 Se puede utilizar la mayoría de las letras ISO 8859-1 o Unicode como å y ü en los identificadores.
 
@@ -252,9 +252,9 @@ JavaScript tiene tres tipos de declaraciones de variables:
 
 - **var**: Declara una variable tanto local como global, dependiendo del contexto de ejecución. Si se declara dentro de una función tiene ámbito de función. Si se declara fuera de una función tiene ámbito global.
 
-- **let** (a partir de ES2015): Declara una variable local con ámbito de bloque.
+- **let** (a partir de ES2015 o ES6): Declara una variable local con ámbito de bloque.
 
-- **const** (a partir de ES2015): Declara un nombre de constante de sólo lectura y ámbito de bloque.
+- **const** (a partir de ES2015 o ES6): Declara un nombre de constante de sólo lectura y ámbito de bloque.
 
 Se puede asignar un valor directamente a una variable, como por ejemplo `x = 4`. Esto crea una variable global no declarada. A menudo provocan un comportamiento inesperado por lo que se **desaconseja su uso**.
 
@@ -291,11 +291,23 @@ function declaracionVariableEnFuncion() {
 console.log(y); // ERROR!! ReferenceError: y is not defined
 ```
 
+Mientras que el uso de **var** permite la redefinición o sobreescritura de variables, las variables definidas con **let** no se permite que puedan ser definida de nuevo dentro del mismo contexto o bloque:
+
+```js
+let miVariable = 10; // Fuera del bloque 'if'
+
+if (true) {
+    let miVariable = 20; // Dentro del bloque 'if'
+    let miVariable = 30; // SyntaxError: Identifier 'miVariable' has already been declared
+    console.log(miVariable); // Nunca se ejecutará debido al error anterior
+}
+```
+
 #### Ámbito de las variables
 
-Cuando se declara una variable fuera de cualquier función, se denomina **variable global**, porque está disponible para cualquier otro código en el documento actual.
+Cuando se declara una variable **fuera** de cualquier función, se denomina **variable global**, porque está disponible para cualquier otro código en el documento actual.
 
-Cuando se declara una variable dentro de una función tanto con `const` como `var` o `let`, se llama **variable local**, porque solo está disponible dentro de esa función.
+Cuando se declara una variable **dentro** de una función con `const`, `var` o `let`, se llama **variable local**, porque solo está disponible dentro de esa función.
 
 ```js
 // El ámbito de 'x' es el contexto global (o el de una función si este código estuviera 
@@ -306,7 +318,7 @@ if (true) {
 console.log(x); // x es 5
 ```
 
-A partir de ECMAScript 6 (2015) se presenta el área de validez a _nivel de bloque_. Tanto `let` como `const` tiene el área de validez a nivel de bloque.
+A partir de ECMAScript 6 (2015) se presenta el área de validez a **_nivel de bloque_**. Tanto `let` como `const` tiene el área de validez a nivel de bloque. Un bloque está delimitado por llaves (`{}`).
 
 ```js
 if (true) {
@@ -418,7 +430,7 @@ Las reglas de ámbito para las constantes son las mismas que las de ámbito de b
 
 No se puede declarar una constante con el mismo nombre que una función o una variable en el mismo ámbito
 
-### Estructuras y tipos de datos
+### Tipos de datos
 
 - **Tipos primitivos**:
   - _number_ - valor númerico como enteros o decimales
@@ -443,70 +455,6 @@ No se puede declarar una constante con el mismo nombre que una función o una va
   - _Promise_ - utilizado para operaciones asincrónicas.
   - _Proxy_ - utilizado para la creación de objetos con comportamientos personalizados.
   - _RegExp_ - representa expresiones regulares.
-
-#### Comprobación de tipos
-
-Para comprobar el tipo de datos de un determinado valor, utilizamos el operador `typeof`:
-
-```js
-console.log(typeof "Hello World!!"); // string
-console.log(typeof 5); // number
-console.log(typeof true); // boolean
-console.log(typeof null); // object
-console.log(typeof undefined); // undefined
-```
-
-Existe la función `isNaN()` para comprobar si una expresión es numérica o no lo es. Para JavaScript, el valor **NaN (_"Not a Number"_)** es un valor válido.
-
-```js
-isNaN(NaN); // true
-isNaN(1); // false: 1 is a number
-isNaN(-2e-4); // false: -2e-4 is a number (-0.0002) in scientific notation
-isNaN(Infinity); // false: Infinity is a number
-isNaN(true); // false: converted to 1, which is a number
-isNaN(false); // false: converted to 0, which is a number
-isNaN(null); // false: converted to 0, which is a number
-isNaN(""); // false: converted to 0, which is a number
-isNaN(" "); // false: converted to 0, which is a number
-isNaN("45.3"); // false: string representing a number, converted to 45.3
-isNaN("1.2e3"); // false: string representing a number, converted to 1.2e3
-isNaN("Infinity"); // false: string representing a number, converted to Infinity
-isNaN(new Date); // false: Date object, converted to milliseconds since epoch
-isNaN("10$"); // true : conversion fails, the dollar sign is not a digit
-isNaN("hello"); // true : conversion fails, no digits at all
-isNaN(undefined); // true : converted to NaN
-isNaN(); // true : converted to NaN (implicitly undefined)
-isNaN(function(){}); // true : conversion fails
-isNaN({}); // true : conversion fails
-isNaN([1, 2]); // true : converted to "1, 2", which can't be converted to a number
-```
-
-[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN)
-
-#### Conversión de tipos de datos
-
-JavaScript es un lenguaje **_tipado dinámicamente_**. Esto significa que no hay que especificar el tipo de dato de una variable cuando se declara. También significa que los tipos de datos se convierten automáticamente según sea necesario durante la ejecución del script.
-
-```js
-// Esto es perfectamente válido y no genera ningún error
-var answer = 42;
-
-answer = "La variable ahora contiene un texto";
-```
-
-##### Convertir texto a números
-
-En el caso que un valor representando un número está en memoria como texto, tenemos los métodos `parseInt()` y `parseFloat()` para realizar la conversión.
-
-La función `parseInt()` devuelve un entero por lo que desechará la parte decimal si el número en formato texto que queremos convertir tiene decimales.
-
-Además, la función `parseInt()` permite indicar el sistema numérico a utilizar.
-
-```js
-parseInt("3.456"); // Devuelve 3
-
-parseInt("101", 2); // Devuelve 5 ya que 101 es la representación en binario de 5
-```
 
 #### Números
 
@@ -542,6 +490,31 @@ El valor **undefined** se comporta como **NaN** en contextos numéricos mientras
 
 [Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
 
+Los tipos numéricos disponen de la función [`toLocaleString()`](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) para formatear números en **decimal**, **moneda** o **tanto por ciento**. Según el tipo, acepta un objeto con las opciones para presentar el número:
+
+```js
+(0.54).toLocaleString("es-ES", {style: "percent"}); // '54 %'
+
+
+(0.21).toLocaleString("es-ES", {style: "percent", minimumFractionDigits: 2}); // '21,00 %'
+
+var options = {
+  style: "currency",
+  currency: "EUR",
+  currencyDisplay: "name"
+}
+(4.1).toLocaleString("es-ES", options); // '4,10 euros'
+
+var options = {
+  style: "currency",
+  currency: "EUR",
+  currencyDisplay: "symbol"
+}
+(4.1).toLocaleString("es-ES", options); // '4,10 €'
+```
+
+Para controlar el número de dígitos en la parte entera o decimal se utiliza en las opciones `minimumIntegerDigits`, `minimumFractionDigits`, `maximumFractionDigits`.
+
 #### Valores booleanos
 
 Los valores booleanos sólo pueden tomar los valores **true** o **false**.
@@ -571,7 +544,13 @@ Por tanto, sólo los **textos vacíos**, el valor **0**, el valor **false**, el 
 
 JavaScript permite delimitar los textos tanto con comillas simples como con comillas dobles. Desde la versión ES2016 se permiten las comillas invertidas.
 
-El operador de suma `+` permite concatenar texto y expresiones en JavaScript aunque esta práctica se ya considera obsoleta:
+```js
+let cadena1 = "Esto es una cadena";
+let cadena2 = 'Esto es una cadena';
+let cadena3= `Esto es una cadena`;
+```
+
+El operador de suma `+` permite concatenar texto y expresiones en JavaScript aunque esta práctica se considera **obsoleta**:
 
 ```js
 var x = "La respuesta es " + 42; // "La respuesta es 42"
@@ -588,7 +567,7 @@ var z = "37" + 7; // "377"
 console.log(typeof z); // string
 ```
 
-A partir de ES2016 se deben utilizar las **_string templates_** utilizando `${}` dentro de una cadena con comillas invertidas:
+A partir de ES2016 se deben utilizar las **_'string templates'_** utilizando `${}` dentro de una cadena con comillas invertidas:
 
 ```js
 let x = 8;
@@ -663,6 +642,86 @@ console.log("Hola, mundo!".split(", ")); // Imprime ["Hola", "mundo!"]
 ```
 
 [Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+#### Comprobación y conversión de tipos
+
+Para comprobar el tipo de datos de un determinado valor, utilizamos el operador `typeof`:
+
+```js
+console.log(typeof "Hello World!!"); // string
+console.log(typeof 5); // number
+console.log(typeof true); // boolean
+console.log(typeof null); // object
+console.log(typeof undefined); // undefined
+```
+
+Existe la función `isNaN()` para comprobar si una expresión es numérica o no lo es. Para JavaScript, el valor **NaN (_"Not a Number"_)** es un valor válido.
+
+```js
+isNaN(NaN); // true
+isNaN(1); // false: 1 is a number
+isNaN(-2e-4); // false: -2e-4 is a number (-0.0002) in scientific notation
+isNaN(Infinity); // false: Infinity is a number
+isNaN(true); // false: converted to 1, which is a number
+isNaN(false); // false: converted to 0, which is a number
+isNaN(null); // false: converted to 0, which is a number
+isNaN(""); // false: converted to 0, which is a number
+isNaN(" "); // false: converted to 0, which is a number
+isNaN("45.3"); // false: string representing a number, converted to 45.3
+isNaN("1.2e3"); // false: string representing a number, converted to 1.2e3
+isNaN("Infinity"); // false: string representing a number, converted to Infinity
+isNaN(new Date); // false: Date object, converted to milliseconds since epoch
+isNaN("10$"); // true : conversion fails, the dollar sign is not a digit
+isNaN("hello"); // true : conversion fails, no digits at all
+isNaN(undefined); // true : converted to NaN
+isNaN(); // true : converted to NaN (implicitly undefined)
+isNaN(function(){}); // true : conversion fails
+isNaN({}); // true : conversion fails
+isNaN([1, 2]); // true : converted to "1, 2", which can't be converted to a number
+```
+
+[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN)
+
+JavaScript es un lenguaje **_tipado dinámicamente_**. Esto significa que no hay que especificar el tipo de dato de una variable cuando se declara. También significa que los tipos de datos se convierten automáticamente según sea necesario durante la ejecución del script.
+
+```js
+// Esto es perfectamente válido y no genera ningún error
+var answer = 42;
+
+answer = "La variable ahora contiene un texto";
+```
+
+JavaScript dispone de las funciones [`parseInt()`](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/parseInt) y [`parseFloat()`](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/parseFloat) integradas en el lenguaje para realizar la conversión de tipos de **'string' a 'number'**.
+
+```js
+let cadena = "123";
+let numero = parseInt(cadena);
+
+console.log(typeof(cadena)); // imprime 'string'
+console.log(typeof(numero)); // imprime 'number'
+```
+
+La función `parseInt()` devuelve un entero por lo que desechará la parte decimal si el número en formato texto que queremos convertir tiene decimales.
+
+Además, la función `parseInt()` permite indicar el sistema numérico a utilizar. Por defecto se asume en **base decimal**. Si el valor comienza por `0x` se asume que está en **base hexadecimal**.
+
+Si se intenta hacer la conversión de una cadena que no es un número devuelve `NaN`.
+
+```js
+parseInt("3.456"); // Devuelve 3
+parseInt("101", 2); // Devuelve 5 ya que 101 es la representación en binario de 5
+
+console.log(parseInt("42")); // Salida: 42
+console.log(parseInt("-123")); // Salida: -123
+console.log(parseInt("3.14")); // Salida: 3
+console.log(parseInt("abc123")); // Salida: NaN (Not a Number)
+console.log(parseInt("123abc")); // Salida: 123
+console.log( parseInt("   456")); // Salida: 456
+console.log(parseInt("0123", 8)); // Salida: 83 (en octal)
+console.log(parseInt("0123", 10)); // Salida: 123 (en decimal)
+console.log(parseInt("0123")); // Salida: 123 (en decimal por defecto)
+console.log(parseInt("0x11")); // Salida: 17 (en hexadecimal)
+```
 
 ### Operadores
 
@@ -3673,6 +3732,8 @@ if (Object.create === undefined){ // esta validación sirve para no sobreescribi
 - <https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript>
 - <https://goalkicker.com/JavaScriptBook/>
 - <https://jsfiddle.net/>
+- <https://websocket.org/>
+- <https://caniuse.com/>
 
 ## Licencia
 
