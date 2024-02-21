@@ -1,8 +1,8 @@
 ## Custom files
 *.bat
 *.yaml
-javascript.html
-practice_old/
+*.html
+temp/
 .npmrc
 ## --------------------
 
