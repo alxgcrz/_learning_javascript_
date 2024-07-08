@@ -3713,27 +3713,11 @@ if (Object.create === undefined){ // esta validación sirve para no sobreescribi
 
 ---
 
-## Enlaces de interés
+## Referencias
 
-- <https://github.com/sorrycc/awesome-javascript>
-- <https://github.com/ryanmcdermott/clean-code-javascript>
-- <https://lenguajejs.com>
-- <https://developer.mozilla.org/es/docs/Web/JavaScript>
-- <https://github.com/CodeKommissar/JavaScript-Elocuente/blob/master/00_intro.md>
-- <https://overapi.com/javascript>
-- <https://htmlcheatsheet.com/js/>
-- <https://ilovecoding.org/blog/js-cheatsheet>
-- <https://cheatsheets.shecodes.io/javascript>
-- <https://roadmap.sh/javascript>
-- <https://learnxinyminutes.com/docs/es-es/javascript-es/>
-- <https://javascript.info/>
-- <https://www.javascripttutorial.net/>
-- <https://exploringjs.com/es6/>
-- <https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript>
-- <https://goalkicker.com/JavaScriptBook/>
+- 🔸 <https://developer.mozilla.org/es/docs/Web/JavaScript>
+- 👓 <https://github.com/sorrycc/awesome-javascript>
 - <https://jsfiddle.net/>
-- <https://websocket.org/>
-- <https://caniuse.com/>
 
 ## Licencia
 
