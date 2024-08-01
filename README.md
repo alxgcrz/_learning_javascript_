@@ -28,13 +28,13 @@ La versión que garantiza una compatibilidad de prácticamente el 100% en navega
 
 A partir de ese año 2015 se toma como regla nombrar las diferentes especificaciones por su año en vez de por la versión. Por tanto se recomienda utilizar **ECMAScript 2015** o **ES2015** en vez de ECMAScript 6.
 
-[Más información sobre sobre la especificación ECMAScript](https://lenguajejs.com/javascript/introduccion/ecmascript/)
+- [Más información sobre sobre la especificación ECMAScript](https://lenguajejs.com/javascript/introduccion/ecmascript/)
 
-[Tabla de compatibilidades entre el estándar ECMAScript y las diferentes versiones de navegadores](https://compat-table.github.io/compat-table/es6/)
+- [Tabla de compatibilidades entre el estándar ECMAScript y las diferentes versiones de navegadores](https://compat-table.github.io/compat-table/es6/)
 
 ## JavaScript en el navegador
 
-La herramienta **Consola** integrada en [Firefox](https://firefox-source-docs.mozilla.org/devtools-user/web_console/the_command_line_interpreter/index.html) (y en otros navegadores) es útil para experimentar con JavaScript. Nos permite ver errores y advertencias que han surgido al ejecutar el código de página, pertenecientes tanto a JavaScript como CSS o HTML. Puede usarse en dos modos: modo de entrada unilínea y modo de entrada multilínea.
+La herramienta **"Consola"** integrada en [Firefox](https://firefox-source-docs.mozilla.org/devtools-user/web_console/the_command_line_interpreter/index.html) (y en otros navegadores) es útil para experimentar con JavaScript. Nos permite ver errores y advertencias que han surgido al ejecutar el código de página, pertenecientes tanto a JavaScript como CSS o HTML. Puede usarse en dos modos: modo de entrada unilínea y modo de entrada multilínea.
 
 Por otro lado, tenemos el **depurador** de código en el navegador, que nos permite poner _breakpoints_ y depurar el código JavaScript.
 
@@ -43,6 +43,7 @@ Por otro lado, tenemos el **depurador** de código en el navegador, que nos perm
 JavaScript puede ser añadido a un documento HTML de dos formas:
 
 - **Scripts en línea**: el código JS se incluye en el HTML, dentro de la propia etiqueta
+
 - **Scripts externos**: el código JS se incluye en un fichero JavaScript externo
 
 ### Scripts en línea
@@ -77,7 +78,7 @@ Si la etiqueta `<script>` se coloca en alguna parte de la etiqueta `<body>`, el 
 
 En cambio, si la etiqueta `<script>` se coloca justo antes de la etiqueta de cierre `</body>`, la página HTML estará "dibujada" al 100% y tendremos acceso a todo el DOM y por tanto a todas las etiquetas.
 
-:warning: Históricamente, el atributo `type` se utilizaba para indicar el tipo de script que ibamos a utilizar, escribiendo generalmente el valor `text/javascript`. Aún se puede encontrar en páginas antiguas pero en la actualidad se omite. Utilizamos este atributo para cargar Javascript como [módulo](https://lenguajehtml.com/html/scripting/script-type-module/) como por ejemplo `<script type="module" src="js/index.js"></script>`.
+> :warning: Históricamente, el atributo `type` se utilizaba para indicar el tipo de script que se iba a utilizar, escribiendo generalmente el valor `text/javascript`. Aún se puede encontrar en páginas antiguas pero en la actualidad se omite. Se utiliza este atributo para cargar Javascript como [módulo](https://lenguajehtml.com/html/scripting/script-type-module/) como por ejemplo `<script type="module" src="js/index.js"></script>`.
 
 ```html
 <!DOCTYPE html>
@@ -488,8 +489,6 @@ console.log(z1); // imprime 'Infinity'
 
 El valor **undefined** se comporta como **NaN** en contextos numéricos mientras que **null** se comporta como un **0**.
 
-[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
-
 Los tipos numéricos disponen de la función [`toLocaleString()`](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) para formatear números en **decimal**, **moneda** o **tanto por ciento**. Según el tipo, acepta un objeto con las opciones para presentar el número:
 
 ```js
@@ -514,6 +513,8 @@ var options = {
 ```
 
 Para controlar el número de dígitos en la parte entera o decimal se utiliza en las opciones `minimumIntegerDigits`, `minimumFractionDigits`, `maximumFractionDigits`.
+
+- [Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
 
 #### Valores booleanos
 
@@ -641,7 +642,7 @@ console.log("   Hola, mundo!   ".trim()); // Imprime "Hola, mundo!"
 console.log("Hola, mundo!".split(", ")); // Imprime ["Hola", "mundo!"]
 ```
 
-[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+- [Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 #### Comprobación y conversión de tipos
 
@@ -680,7 +681,7 @@ isNaN({}); // true : conversion fails
 isNaN([1, 2]); // true : converted to "1, 2", which can't be converted to a number
 ```
 
-[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN)
+- [Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN)
 
 JavaScript es un lenguaje **_tipado dinámicamente_**. Esto significa que no hay que especificar el tipo de dato de una variable cuando se declara. También significa que los tipos de datos se convierten automáticamente según sea necesario durante la ejecución del script.
 
@@ -929,9 +930,7 @@ for (let key in objeto) {
 
 Un arreglo o _array_ es una estructura de datos. En JavaScript los arrays son **objetos**.
 
-Los arrays son **dinámicos** y su tamaño se puede modificar después de ser creados.
-
-Además, son **heterogéneos**, lo que significa que pueden almacenar a la vez distintos tipos.
+Los arrays son **dinámicos** y su tamaño se puede modificar después de ser creados. Además, son **heterogéneos**, lo que significa que pueden almacenar a la vez distintos tipos.
 
 ```js
 // Crear un array vacío
@@ -1027,7 +1026,7 @@ console.log(b); // imprime 'apple'
 console.log(array); // imprime [ 'orange', 'kiwi', 'watermelon' ]
 ```
 
-[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+- [Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
 ### Set
 
@@ -1145,7 +1144,7 @@ const numbers = [2, 13, 4, 4, 2, 13, 13, 4, 4, 5, 5, 6, 6, 7, 5, 32, 13, 4, 5];
 console.log([...new Set(numbers)]); // [2, 13, 4, 5, 6, 7, 32]
 ```
 
-[Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
+- [Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
 
 ### Map
 
@@ -1610,7 +1609,7 @@ console.log(a.obtenerPares()); // imprime '[ 2, 4, 6, 8 ]'
 
 ## Objetos globales predefinidos
 
-[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects)
+- [Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects)
 
 ### Math
 
@@ -1618,7 +1617,7 @@ Se trata de un objeto global que facilita la ejecución de algunas operaciones m
 
 Tiene disponibles algunas propiedades como `Math.E` o `Math.PI` y métodos como `Math.abs(x)` o `Math.random()`.
 
-[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Math)
+- [Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Math)
 
 ### Date
 
@@ -1636,11 +1635,11 @@ El objeto `Date` también tiene algunos métodos estáticos:
 console.log(Date.now()); // Imprime '1706121708552'
 ```
 
-[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Date)
+- [Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Date)
 
 ### JSON
 
-JSON es el acrónimo de **_JavaScript Objects Notation**__ que se creó en 2001 por parte de Douglas Crockford.
+[JSON](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/JSON) es el acrónimo de **_JavaScript Objects Notation**__ que se creó en 2001 por parte de Douglas Crockford.
 
 La notación JSON es un formato de intercambio de datos ligero y legible por humanos. Las características clave de JSON:
 
@@ -1684,8 +1683,6 @@ JavaScript aporta un objeto global llamado `JSON` que permite manipular datos en
 
 - **`JSON.parse()`**: analiza una cadena de texto en formato JSON, transformando opcionalmente el valor producido por el análisis al objeto JavaScript. Si no es correcto devuelve una excepción de tipo `SyntaxError`.
 
-[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/JSON)
-
 ## Manipulación del DOM
 
 El **DOM _(Document Object Model)_** es una parte de lo que se conoce como **BOM _(Browser Objects Model)_**.
@@ -1696,59 +1693,47 @@ El objeto raíz es el objeto **'window'**. Este objeto es tan importante que pue
 
 La jerarquía del **BOM** en JavaScript sigue una estructura que involucra varios objetos:
 
-- **window (ventana)**: El objeto raíz en la jerarquía del BOM. Representa la ventana del navegador y proporciona acceso a otros objetos del BOM. Casi todas las variables y funciones globales en JavaScript son propiedades y métodos del objeto `window`.
+- [**window (ventana)**](https://developer.mozilla.org/es/docs/Web/API/Window): El objeto raíz en la jerarquía del BOM. Representa la ventana del navegador y proporciona acceso a otros objetos del BOM. Casi todas las variables y funciones globales en JavaScript son propiedades y métodos del objeto `window`.
 
 ```js
 // Ejemplo de acceso a la ventana actual a través de window
 window.alert("Hola, mundo!");
 ```
 
-[Más información](https://developer.mozilla.org/es/docs/Web/API/Window)
-
-- **document (documento)**: Aunque el modelo de objeto del documento (DOM) se ocupa principalmente de la estructura y contenido de la página HTML, el objeto `document` también se considera parte del BOM. Proporciona métodos para acceder y manipular el contenido HTML del documento.
+- [**document (documento)**](https://developer.mozilla.org/es/docs/Web/API/Document): Aunque el modelo de objeto del documento (DOM) se ocupa principalmente de la estructura y contenido de la página HTML, el objeto `document` también se considera parte del BOM. Proporciona métodos para acceder y manipular el contenido HTML del documento.
 
 ```js
 // Ejemplo de acceso al documento a través de window
 window.document.getElementById("miElemento");
 ```
 
-[Más información](https://developer.mozilla.org/es/docs/Web/API/Document)
-
-- **navigator (navegador)**: Representa información sobre el navegador del usuario, como el nombre, la versión y las características. Este objeto posee numerosas propiedades de sólo lectura:
+- [**navigator (navegador)**](https://developer.mozilla.org/es/docs/Web/API/Navigator): Representa información sobre el navegador del usuario, como el nombre, la versión y las características. Este objeto posee numerosas propiedades de sólo lectura:
 
 ```js
 // Ejemplo de acceso al objeto navigator a través de window
 window.navigator.userAgent;
 ```
 
-[Más información](https://developer.mozilla.org/es/docs/Web/API/Navigator)
-
-- **location (ubicación)**: Proporciona información sobre la URL actual del documento y permite la manipulación de la ubicación del navegador.
+- [**location (ubicación)**](https://developer.mozilla.org/es/docs/Web/API/Location): Proporciona información sobre la URL actual del documento y permite la manipulación de la ubicación del navegador.
 
 ```js
 // Ejemplo de acceso al objeto location a través de window
 window.location.href = "https://www.ejemplo.com";
 ```
 
-[Más información](https://developer.mozilla.org/es/docs/Web/API/Location)
-
-- **history (historial)**: Permite la manipulación del historial de navegación del usuario.
+- [**history (historial)**](https://developer.mozilla.org/es/docs/Web/API/History): Permite la manipulación del historial de navegación del usuario.
 
 ```js
 // Ejemplo de acceso al objeto history a través de window
 window.history.back();
 ```
 
-[Más información](https://developer.mozilla.org/es/docs/Web/API/History)
-
-- **screen (pantalla)**: Proporciona información sobre las propiedades de la pantalla del dispositivo del usuario.
+- [**screen (pantalla)**](https://developer.mozilla.org/es/docs/Web/API/Screen): Proporciona información sobre las propiedades de la pantalla del dispositivo del usuario.
 
 ```js
 // Ejemplo de acceso al objeto screen a través de window
 window.screen.width;
 ```
-
-[Más información](https://developer.mozilla.org/es/docs/Web/API/Screen)
 
 ### DOM
 
@@ -1794,11 +1779,11 @@ console.log(document.head.nodeName);  // Imprime 'HEAD'
 - **Element = Nombre de la etiqueta del elemento**
 - **Attr = Nombre del atributo**
 
-[Más información](https://developer.mozilla.org/es/docs/Web/API/Node)
+- [Más información](https://developer.mozilla.org/es/docs/Web/API/Node)
 
 ### Selección de elementos del DOM
 
-El objeto `document` proporciona numerosos métodos para seleccionar elementos:
+El objeto `document` proporciona numerosos [métodos](https://developer.mozilla.org/es/docs/Web/API/Document#m%C3%A9todos) para seleccionar elementos:
 
 - **`document.getElementById(id)`**: selecciona un elemento por su identificador o _id_. Si no se encuentra el elemento retorna `null`.
 
@@ -1811,8 +1796,6 @@ El objeto `document` proporciona numerosos métodos para seleccionar elementos:
 - **`document.querySelector(selector)`**: retorna el primer elemento del documento que coincida con el grupo especificado de selectores.
 
 - **`document.querySelectorAll(selector)`**: retorna un `NodeList` que representa una lista de elementos del documento que coincida con el grupo especificado de selectores.
-
-[Más información](https://developer.mozilla.org/es/docs/Web/API/Document#m%C3%A9todos)
 
 ### Manipulación de atributos
 
@@ -2193,7 +2176,7 @@ Los eventos se asocian a un elemento del DOM.
 
 La clave de los eventos en JavaScript es su capacidad asíncrona.
 
-[Más información](https://developer.mozilla.org/es/docs/Learn/JavaScript/Building_blocks/Events)
+- [Más información](https://developer.mozilla.org/es/docs/Learn/JavaScript/Building_blocks/Events)
 
 ### Mecanismos obsoletos
 
@@ -2336,7 +2319,7 @@ function message(event) {
 
 Los gestores de eventos pueden estar atados a varios elementos en el DOM. Cuando un evento ocurre, un objeto de evento es dinámicamente creado y pasado secuencialmente a las "escuchas" (_listeners_) autorizadas para la gestión del evento.
 
-La interfaz `Event` del DOM es entonces accesible por la función de manejo, vía el objeto de evento puesto como el primer (y único) argumento:
+La interfaz [`Event`](https://developer.mozilla.org/es/docs/Web/API/Event) del DOM es entonces accesible por la función de manejo, vía el objeto de evento puesto como el primer (y único) argumento:
 
 ```js
 let button = document.querySelector("button");
@@ -2375,8 +2358,6 @@ Algunos de los comportamientos por defecto que aplican los navegadores según el
 - **`<input type="button">`** o **`<button type="button">`**: no tiene una acción predeterminada
 
 - **`<a>`** (como un botón dentro de un formulario): puede redirigir a otra página.
-
-[Más información](https://developer.mozilla.org/es/docs/Web/API/Event)
 
 #### Tipos de eventos
 
@@ -2444,7 +2425,7 @@ try {
 }
 ```
 
-[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Error)
+- [Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 ### Modo estricto
 
@@ -2550,7 +2531,7 @@ myModule.miFuncion(); // Imprime "Hola desde miFuncion"
 </script>  
 ```
 
-[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Modules)
+- [Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Modules)
 
 ## Programación asíncrona
 
@@ -2776,7 +2757,7 @@ obtenerDatosDeServicios()
 
 Es importante resaltar que, si alguna promesa se rechazara o provocara un error, instantáneamente se generaría el rechazo sin esperar al resto de promesas.
 
-[Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Using_promises)
+- [Más información](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Using_promises)
 
 ### Async/await
 
@@ -2841,7 +2822,7 @@ Por otra parte el encabezado `Access-Control-Allow-Methods` especifica los méto
 
 CORS es esencial para prevenir ataques de solicitudes entre sitios (CSRF) y garantizar que las interacciones entre dominios sean seguras y autorizadas.
 
-[Más información](https://developer.mozilla.org/es/docs/Web/HTTP/CORS)
+- [Más información](https://developer.mozilla.org/es/docs/Web/HTTP/CORS)
 
 ### AJAX
 
@@ -2920,7 +2901,7 @@ fetch(apiUrl)
 
 #### Manipular el objeto `Response`
 
-Una vez que el objeto `Response` es recuperado, dispone de varias propiedades con información de la respuesta recibida:
+Una vez que el objeto [`Response`](https://developer.mozilla.org/es/docs/Web/API/Response) es recuperado, dispone de varias propiedades con información de la respuesta recibida:
 
 - **headers**: obtiene un objeto que contiene las cabeceras http del paquete de respuesta.
 
@@ -2952,11 +2933,9 @@ Además, el objeto de la respuesta tiene varios métodos:
 
 - **blob()**: obtiene un objeto binario de la respuesta, como por ejemplo ficheros o imágenes.
 
-[Más información](https://developer.mozilla.org/es/docs/Web/API/Response)
-
 #### Personalizar el objeto `Request`
 
-Cuando se realizan peticiones mediante el método `fetch()`, además de la URL, podemos pasar como parámetro un objeto de tipo `Request`.
+Cuando se realizan peticiones mediante el método `fetch()`, además de la URL, podemos pasar como parámetro un objeto de tipo [`Request`](https://developer.mozilla.org/es/docs/Web/API/Request).
 
 Este objeto permite modificar el paquete http que se envía con la petición para que se ajuste a las necesidades del cliente.
 
@@ -3014,8 +2993,6 @@ fetch(request)
     console.error('Error en la solicitud:', error);
   });
 ```
-
-[Más información](https://developer.mozilla.org/es/docs/Web/API/Request)
 
 #### Uso de `async/await`con `fetch()`
 
@@ -3717,6 +3694,8 @@ if (Object.create === undefined){ // esta validación sirve para no sobreescribi
 
 - 🔸 <https://developer.mozilla.org/es/docs/Web/JavaScript>
 - 👓 <https://github.com/sorrycc/awesome-javascript>
+- <https://cheatsheets.zip/javascript>
+- <https://exercism.org/tracks/javascript>
 - <https://jsfiddle.net/>
 
 ## Licencia
