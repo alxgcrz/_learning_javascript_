@@ -3695,6 +3695,7 @@ if (Object.create === undefined){ // esta validación sirve para no sobreescribi
 ### JavaScript
 
 - 🔸 <https://developer.mozilla.org/es/docs/Web/JavaScript>
+- <https://262.ecma-international.org/>
 - 👓 <https://github.com/sorrycc/awesome-javascript>
 - <https://caniuse.com/>
 - <https://jsfiddle.net/>
@@ -3735,6 +3736,7 @@ if (Object.create === undefined){ // esta validación sirve para no sobreescribi
 - [Socket.IO enables real-time, bidirectional and event-based communication](https://socket.io/)
 - [CreateJS | A suite of Javascript libraries and tools designed for working with HTML5](https://createjs.com/)
 - [ESLint statically analyzes your code to quickly find problems](https://eslint.org/)
+- [JavaScript Standard Style](https://standardjs.com/)
 - <https://websocket.org/>
 - [Apache ECharts - An Open Source JavaScript Visualization Library](https://echarts.apache.org/en/index.html)
 
