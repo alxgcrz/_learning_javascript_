@@ -38,6 +38,26 @@ La herramienta **"Consola"** integrada en [Firefox](https://firefox-source-docs.
 
 Por otro lado, tenemos el **depurador** de código en el navegador, que nos permite poner _breakpoints_ y depurar el código JavaScript.
 
+## El objeto 'console' en JavaScript
+
+El objeto `console` es un objeto global disponible tanto en navegadores como en Node.js, que proporciona métodos para escribir mensajes en la consola del entorno donde se ejecuta el código JavaScript. Es ampliamente utilizado para depurar, registrar información o diagnosticar problemas durante el desarrollo.
+
+- **`console.log(...)`**: Muestra información general.
+- **`console.error(...)`**: Muestra errores (normalmente en rojo).
+- **`console.warn(...)`**: Muestra advertencias.
+- **`console.info(...)`**: Similar a `log`, usado para información informativa.
+- **`console.table(obj)`**: Muestra datos en forma de tabla (especialmente útil con arrays de objetos).
+- **`console.time(label)` / `console.timeEnd(label)`**: Mide el tiempo entre dos puntos del código.
+- **`console.group(label)` / `console.groupEnd()`**: Agrupa mensajes con sangría jerárquica para facilitar la lectura.
+- **`console.trace()`**: Imprime un stack trace (pila de llamadas) del punto actual.
+- **`console.assert(cond, msg)`**: Solo imprime el mensaje si la condición es falsa.
+
+En navegadores se accede directamente a `console` sin necesidad de importar nada.
+
+- <https://developer.mozilla.org/en-US/docs/Web/API/console>
+
+- <https://nodejs.org/api/console.html>
+
 ## Integración con HTML
 
 JavaScript puede ser añadido a un documento HTML de dos formas:
@@ -330,9 +350,9 @@ console.log(y); // ReferenceError: y no está definida
 
 ##### Elevación de variables (hoisting)
 
-Otra cosa inusual acerca de las variables en JavaScript es que puedes hacer referencia a una variable declarada más tarde, sin obtener una excepción.
+En JavaScript, se puede hacer referencia a una variable declarada más tarde, sin obtener una excepción a diferencia de otros lenguajes como Java.
 
-Este concepto se conoce como **elevación (hoisting)**. Las variables en JavaScript son, en cierto sentido, "elevadas" (o "izadas") a la parte superior de la función o declaración. Sin embargo, las variables que se elevan devuelven un valor de _undefined_. Entonces, incluso si la declaras e inicias después de usarla o hacer referencia a esta variable, todavía devuelve undefined.
+Este mecanismo se conoce como **elevación (_'hoisting'_)**. En JavaScript, las declaraciones de variables y funciones se procesan antes de ejecutar el código, como si fueran "elevadas" o "izadas" a la parte superior del ámbito (función o global). Sin embargo, solo se eleva la declaración, no la inicialización. Por eso, si se usa una variable antes de asignarle un valor, su valor será `undefined`. Es decir, aunque se declare y se inicialice la variable después de usarla, al acceder a ella previamente se obtiene `undefined`, no un error.
 
 ```js
 /* Ejemplo 1 */
@@ -434,28 +454,28 @@ No se puede declarar una constante con el mismo nombre que una función o una va
 ### Tipos de datos
 
 - **Tipos primitivos**:
-  - _number_ - valor númerico como enteros o decimales
-  - _string_ - una secuencia de caracteres que representan un valor de texto
-  - _boolean_ - valores de `true` o `false`
-  - _null_ - `null` es una palabra clave especial que denota un valor nulo
-  - _undefined_ - `undefined` es una propiedad de alto nivel cuyo valor no está definido
-  - _symbol_ (ECMAScript 6) - tipo de dato cuyas instancias son únicas e inmutables
+  - **_number_** - valor númerico como enteros o decimales
+  - **_string_** - una secuencia de caracteres que representan un valor de texto
+  - **_boolean_** - valores de `true` o `false`
+  - **_null_** - `null` es una palabra clave especial que denota un valor nulo
+  - **_undefined_** - `undefined` es una propiedad de alto nivel cuyo valor no está definido
+  - **_symbol_** (ECMAScript 6) - tipo de dato cuyas instancias son únicas e inmutables
 
 - **Objetos**:
-  - _Object_ - los objetos son como contenedores con nombre para los valores
-  - _Array_ - un tipo especial de objeto para almacenar una secuencia ordenada de valores
-  - _Function_ - objetos que contienen código ejecutable.
+  - **_Object_** - los objetos son como contenedores con nombre para los valores
+  - **_Array_** - un tipo especial de objeto para almacenar una secuencia ordenada de valores
+  - **_Function_** - objetos que contienen código ejecutable.
 
 - **Estructuras de datos adicionales**:
-  - _Set_ - colección de valores únicos.
-  - _Map_ - colección de pares clave-valor.
-  - _WeakSet_ y _WeakMap_ - versiones "débiles" de Set y Map que no impiden la eliminación de elementos por el recolector de basura.
+  - **_Set_** - colección de valores únicos.
+  - **_Map_** - colección de pares clave-valor.
+  - **_WeakSet_** y _WeakMap_ - versiones "débiles" de Set y Map que no impiden la eliminación de elementos por el recolector de basura.
 
 - **Tipos especiales**:
-  - _Bigint_ (ECMAScript 2020) - representa un número entero con precisión arbitraria
-  - _Promise_ - utilizado para operaciones asincrónicas.
-  - _Proxy_ - utilizado para la creación de objetos con comportamientos personalizados.
-  - _RegExp_ - representa expresiones regulares.
+  - **_Bigint_** (ECMAScript 2020) - representa un número entero con precisión arbitraria
+  - **_Promise_** - utilizado para operaciones asincrónicas.
+  - **_Proxy_** - utilizado para la creación de objetos con comportamientos personalizados.
+  - **_RegExp_** - representa expresiones regulares.
 
 #### Números
 
@@ -837,10 +857,10 @@ x **= 5; // Equivale a x = x ** 5;
 
 ### Control de flujo
 
-#### Condicinal
+#### Condicional
 
 ```js
-// Asignación condicinal "condicion ? valor_si_true : valor_si_false"
+// Operador ternario "condición ? valor_si_true : valor_si_false"
 true ? 5 : 2; // Devuelve 5
 false ? 5 : 2; // Devuelve 2
 ```
@@ -885,6 +905,29 @@ switch (expresion) {
     // código a ejecutar si ninguno de los casos coincide con la expresion
 }
 ```
+
+#### Operador de coalescencia nula (`??`)
+
+El operador de **coalescencia nula** (`??`) es un operador lógico introducido en ES2020 que devuelve el operando de la derecha cuando el operando de la izquierda es `null` o `undefined`; en caso contrario, devuelve el operando de la izquierda.
+
+Este operador es útil para asignar valores por defecto evitando considerar falsy values como `0`, `''` o `false` como "vacíos".
+
+```js
+let resultado = valorIzquierdo ?? valorPorDefecto;
+
+let nombre = null;
+let nombrePorDefecto = "Invitado";
+
+console.log(nombre ?? nombrePorDefecto); // Imprime: "Invitado"
+
+let edad = 0;
+
+console.log(edad ?? 18); // Imprime: 0 (no usa 18 porque 0 NO es 'null' ni 'undefined')
+```
+
+La diferencia con el operador lógico **OR** (`||`) es que este operador **OR** devuelve el operando de la derecha si el de la izquierda es cualquier valor falsy (`null`, `undefined`, 0, '', `false`, etc.).
+
+Sin embargo, el operador `??` solo lo hace si el operando izquierdo es `null` o `undefined`.
 
 #### Bucles
 
@@ -3699,6 +3742,7 @@ if (Object.create === undefined){ // esta validación sirve para no sobreescribi
 - 👓 <https://github.com/sorrycc/awesome-javascript>
 - <https://caniuse.com/>
 - <https://jsfiddle.net/>
+- <https://jsdoc.app/>
 
 ### JavaScript - Learning
 
