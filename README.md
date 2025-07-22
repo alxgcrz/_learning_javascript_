@@ -971,14 +971,26 @@ for (let key in objeto) {
 
 ### Arrays
 
-Un arreglo o _array_ es una estructura de datos. En JavaScript los arrays son **objetos**.
+Un arreglo o _array_ es una estructura de datos versátil y mutable ya que su tamaño se puede modificar después de ser creados. Además, son **heterogéneos**, lo que significa que pueden almacenar a la vez distintos tipos.
 
-Los arrays son **dinámicos** y su tamaño se puede modificar después de ser creados. Además, son **heterogéneos**, lo que significa que pueden almacenar a la vez distintos tipos.
+En JavaScript, los arrays son **objetos**, lo que implica que al comparar dos arrays con `===` o `==` se compara su referencia en memoria, no su contenido. Para verificar si dos arrays tienen los mismos valores, es necesario comparar sus elementos individualmente.
+
+- <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array>
 
 ```js
 // Crear un array vacío
 let myList = [];
 let otherList = new Array();
+const array = Array.of(1, 2, 3, 4);
+
+// Array.from() crea un nueva instancia de array a partir de un objeto iterable
+console.log(Array.from('test')); // ['t', 'e', 's', 't']
+
+// Se le puede pasar una función como segundo argumento para poder realizar transformaciones
+console.log(Array.from([1, 2, 3], el => el + 1)); // [2, 3, 4]
+
+// Los arrays son objetos en JavaScript
+console.log(typeof otherList); // object
 
 // Inicialización posterior
 myList = [1, 2, 3, 4];
@@ -1021,6 +1033,15 @@ for (let fruit of fruits) {
 // Fruits: undefined
 // Fruits: undefined
 // Fruits: orange
+
+const numbers = [1, 2, 3, 4];
+numbers.forEach(el => {
+  console.log(`${el * 2}`); // 2 4 6 8
+});
+
+// El método Array.isArray() determina si un valor pasado es un array
+let fruits = ["banana", "apple", "orange"];
+console.log(Array.isArray(fruits)); // true 
 ```
 
 ```js
@@ -1047,9 +1068,15 @@ x.sort(function(a, b){return 0.5 - Math.random()});     // random order sort
 dogs.includes("Beagle"); // ES20015 - 'true' si existe el elemento
 dogs.indexOf("Beagle"); // imprime la posición si encuentra el elemento o -1
 dogs.lastIndexOf("Beagle") // imprime la posición si encuentra el elemento o -1
+
+// Validación con la función 'Array.prototype.every()'
+const array1 = [1, 20, 30, 39, 29, 10, 13]
+console.log(array1.every(currentValue => currentValue < 40)); //true
 ```
 
 La versión estándar ES2015 incorporó el operador de **propagación o _spread_** `...` aplicable a iterables, como los arrays, un string o un objeto.
+
+- <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax>
 
 ```js
 let [a, b, c] = ["banana", "apple", "orange"];
@@ -1067,15 +1094,18 @@ let [a, b, ...array] = ["banana", "apple", "orange", "kiwi", "watermelon"];
 console.log(a); // imprime 'banana'
 console.log(b); // imprime 'apple'
 console.log(array); // imprime [ 'orange', 'kiwi', 'watermelon' ]
-```
 
-- [Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+console.log(...[1, 2, 3]); // [1, 2, 3]
+console.log(...'test'); // ['t', 'e', 's', 't']
+```
 
 ### Set
 
 Los conjuntos o _sets_ son una estructura de datos y se consideran como **objetos**. Aparecieron en ES2015.
 
 A diferencia de los arrays, los sets no admiten valores duplicados.
+
+- <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set>
 
 ```js
 // Declarar un conjunto vacío
@@ -1186,8 +1216,6 @@ const numbers = [2, 13, 4, 4, 2, 13, 13, 4, 4, 5, 5, 6, 6, 7, 5, 32, 13, 4, 5];
 
 console.log([...new Set(numbers)]); // [2, 13, 4, 5, 6, 7, 32]
 ```
-
-- [Más información en MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
 
 ### Map
 
